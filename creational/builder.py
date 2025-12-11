@@ -13,18 +13,33 @@ Deliverable: implement a `SparkJobBuilder` API that callers in orchestration cod
 
 
 class SparkJobSpec:
-    def __init__(self, input_source, transforms, windowing, triggers, resources, monitoring_hooks):
-        self.input_source = input_source
-        self.transforms = transforms
-        self.windowing = windowing
-        self.triggers = triggers
-        self.resources = resources
-        self.monitoring_hooks = monitoring_hooks
+    __slots__ = (
+        "input_source",
+        "transforms",
+        "windowing",
+        "triggers",
+        "resources",
+        "monitoring_hooks",
+        "spec_version",
+    )
+
+
+    def __init__(self,*, input_source, transforms, windowing, triggers, resources, monitoring_hooks, spec_version="1.0"):
+        object.__setattr__(self, "input_source", input_source)
+        object.__setattr__(self, "transforms", tuple(transforms))
+        object.__setattr__(self, "windowing", windowing)
+        object.__setattr__(self, "triggers", triggers)
+        object.__setattr__(self, "resources", deepcopy(resources))
+        object.__setattr__(self, "monitoring_hooks", tuple(monitoring_hooks))
+        object.__setattr__(self, "spec_version", spec_version)
 
     def __setattr__(self, key, value):
         if hasattr(self, key):
             raise AttributeError("Cannot modify immutable SparkJobSpec")
         super().__setattr__(key, value)
+
+    def __delattr__(self, key):
+        raise AttributeError("SparkJobSpec is immutable")
 
     def serialize(self):
         return {
@@ -44,6 +59,7 @@ class SparkJobBuilder:
         self._triggers = None
         self._resources = {}
         self._monitoring_hooks = []
+        self._spec_version = "1.0"
 
     def input_source(self, source):
         self._input_source = source
@@ -69,6 +85,10 @@ class SparkJobBuilder:
         self._monitoring_hooks = hooks
         return self
     
+    def spec_version(self, version):
+        self._spec_version = version
+        return self
+    
     def build(self):
         return SparkJobSpec(
             input_source=self._input_source,
@@ -76,5 +96,6 @@ class SparkJobBuilder:
             windowing=self._windowing,
             triggers=self._triggers,
             resources=self._resources,
-            monitoring_hooks=self._monitoring_hooks
+            monitoring_hooks=self._monitoring_hooks,
+            spec_version=self._spec_version
         )
