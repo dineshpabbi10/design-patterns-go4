@@ -12,6 +12,9 @@ Deliverable: implement a `SparkJobBuilder` API that callers in orchestration cod
 """
 
 
+from copy import deepcopy
+
+
 class SparkJobSpec:
     __slots__ = (
         "input_source",
