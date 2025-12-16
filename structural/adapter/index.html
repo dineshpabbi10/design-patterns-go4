@@ -793,13 +793,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-in-your-code" class="md-nav__link">
+  <a href="#usage-examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage in Your Code
+        Usage Examples
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-adaptation-paragon-response-to-internal-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Adaptation: ParagoN Response to Internal Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-adaptation-internal-model-to-paragon-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse Adaptation: Internal Model to ParagoN Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-missing-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Missing Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1161,55 +1200,47 @@
 <h2 id="solution">Solution</h2>
 <p>Implement bidirectional adapters that hide the complexity:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="c1"># Abstract adapter interface</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">BaseAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract adapter for converting between external and internal models.&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseAdapterModel</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract adapter interface.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">external_data</span> <span class="o">=</span> <span class="n">external_data</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert external API response to internal model.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;to_internal method not implemented&quot;</span><span class="p">)</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal model back to external API format.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;to_external method not implemented&quot;</span><span class="p">)</span>
 
 
-<span class="c1"># Concrete adapter for ParagoN User</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNUserAdapter</span><span class="p">(</span><span class="n">BaseAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps between ParagoN API user responses and internal User DTOs.&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNUserAdapter</span><span class="p">(</span><span class="n">BaseAdapterModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps ParagoN API user responses to internal User DTOs.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert ParagoN response to internal User model.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flatten ParagoN&#39;s nested response to internal User model.&quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_data</span>
-
-        <span class="c1"># Safely access nested fields with defaults</span>
-        <span class="n">personal_info</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;personal_info&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">contact</span> <span class="o">=</span> <span class="n">personal_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{})</span>
-
-        <span class="k">return</span> <span class="p">{</span>
+        <span class="n">internal_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="n">personal_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;firstName&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="n">personal_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lastName&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">contact</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email_addr&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="n">contact</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;phone_num&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;account_status&quot;</span><span class="p">,</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+            <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;personal_info&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;firstName&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;personal_info&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lastName&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;personal_info&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email_addr&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;personal_info&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;phone_num&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;account_status&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
             <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created_at&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="p">[]),</span>
-            <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferences&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferences&quot;</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">}</span>
+        <span class="k">return</span> <span class="n">internal_data</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal User model back to ParagoN format for updates.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map internal User model back to ParagoN format.&quot;&quot;&quot;</span>
+        <span class="n">internal_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_data</span>
+        <span class="n">external_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
             <span class="s2">&quot;personal_info&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;firstName&quot;</span><span class="p">),</span>
@@ -1217,88 +1248,120 @@
                 <span class="s2">&quot;contact&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;email_addr&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">),</span>
                     <span class="s2">&quot;phone_num&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;phone&quot;</span><span class="p">),</span>
-                <span class="p">}</span>
+                <span class="p">},</span>
             <span class="p">},</span>
-            <span class="s2">&quot;account_status&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="s2">&quot;account_status&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="s2">&quot;created_at&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdAt&quot;</span><span class="p">),</span>
             <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="p">[]),</span>
                 <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">internal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferences&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-            <span class="p">}</span>
+            <span class="p">},</span>
         <span class="p">}</span>
-
-
-<span class="c1"># Composable adapters for layered transformations</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ValidationAdapter</span><span class="p">(</span><span class="n">BaseAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates converted data.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert and validate.&quot;&quot;&quot;</span>
-        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">external_data</span><span class="p">)</span>
-        <span class="n">internal</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>
-
-        <span class="c1"># Validate required fields</span>
-        <span class="k">assert</span> <span class="n">internal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="s2">&quot;User ID is required&quot;</span>
-        <span class="k">assert</span> <span class="n">internal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">),</span> <span class="s2">&quot;Email is required&quot;</span>
-
-        <span class="k">return</span> <span class="n">internal</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">({})</span>
-        <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_external</span><span class="p">(</span><span class="n">internal_data</span><span class="p">)</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">NormalizationAdapter</span><span class="p">(</span><span class="n">BaseAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalizes data types and formats.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">external_data</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>
-
-        <span class="c1"># Normalize types and formats</span>
-        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdAt&quot;</span><span class="p">):</span>
-            <span class="c1"># Parse ISO string to datetime</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;+00:00&quot;</span><span class="p">))</span>
-
-        <span class="c1"># Ensure consistent casing</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_external</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">({})</span>
-        <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_external</span><span class="p">(</span><span class="n">internal_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">external_data</span>
 </code></pre></div>
-<h2 id="usage-in-your-code">Usage in Your Code</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># When receiving data from ParagoN API</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fetch_user_handler</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="n">paragon_client</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="n">paragon_response</span> <span class="o">=</span> <span class="n">paragon_client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="basic-adaptation-paragon-response-to-internal-model">Basic Adaptation: ParagoN Response to Internal Model</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Receive data from ParagoN API</span>
+<span class="n">paragon_response</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;personal_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;contact&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;email_addr&quot;</span><span class="p">:</span> <span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;phone_num&quot;</span><span class="p">:</span> <span class="s2">&quot;+1234567890&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;account_status&quot;</span><span class="p">:</span> <span class="s2">&quot;ACTIVE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;created_at&quot;</span><span class="p">:</span> <span class="s2">&quot;2023-10-01T12:00:00Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;verified&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;notifications&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-    <span class="c1"># Adapt to internal model</span>
-    <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="n">paragon_response</span><span class="p">)</span>
-    <span class="n">internal_user</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>
+<span class="c1"># Adapt to internal model</span>
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="n">paragon_response</span><span class="p">)</span>
+<span class="n">internal_user</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>
 
-    <span class="c1"># Use internally consistent model in React components</span>
-    <span class="k">return</span> <span class="n">serialize_for_frontend</span><span class="p">(</span><span class="n">internal_user</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">internal_user</span><span class="p">)</span>
+<span class="c1"># {</span>
+<span class="c1">#     &quot;id&quot;: &quot;12345&quot;,</span>
+<span class="c1">#     &quot;firstName&quot;: &quot;John&quot;,</span>
+<span class="c1">#     &quot;lastName&quot;: &quot;Doe&quot;,</span>
+<span class="c1">#     &quot;email&quot;: &quot;john@example.com&quot;,</span>
+<span class="c1">#     &quot;phone&quot;: &quot;+1234567890&quot;,</span>
+<span class="c1">#     &quot;status&quot;: &quot;active&quot;,  # lowercased</span>
+<span class="c1">#     &quot;createdAt&quot;: &quot;2023-10-01T12:00:00Z&quot;,</span>
+<span class="c1">#     &quot;tags&quot;: [&quot;premium&quot;, &quot;verified&quot;],</span>
+<span class="c1">#     &quot;preferences&quot;: {&quot;notifications&quot;: True}</span>
+<span class="c1"># }</span>
+</code></pre></div>
+<h3 id="reverse-adaptation-internal-model-to-paragon-format">Reverse Adaptation: Internal Model to ParagoN Format</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Your internal user model (from React or database)</span>
+<span class="n">internal_user</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Smith&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;+9876543210&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;active&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2023-10-01T12:00:00Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;vip&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;notifications&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="c1"># When updating user via ParagoN API</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">update_user_handler</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">internal_user</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-    <span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">({})</span>
-    <span class="n">paragon_format</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_external</span><span class="p">(</span><span class="n">internal_user</span><span class="p">)</span>
+<span class="c1"># Adapt back to ParagoN format for API request</span>
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="n">internal_user</span><span class="p">)</span>
+<span class="n">paragon_format</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_external</span><span class="p">()</span>
 
-    <span class="n">paragon_client</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="n">paragon_client</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">paragon_format</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">paragon_format</span><span class="p">)</span>
+<span class="c1"># {</span>
+<span class="c1">#     &quot;user_id&quot;: &quot;12345&quot;,</span>
+<span class="c1">#     &quot;personal_info&quot;: {</span>
+<span class="c1">#         &quot;firstName&quot;: &quot;Jane&quot;,</span>
+<span class="c1">#         &quot;lastName&quot;: &quot;Smith&quot;,</span>
+<span class="c1">#         &quot;contact&quot;: {</span>
+<span class="c1">#             &quot;email_addr&quot;: &quot;jane@example.com&quot;,</span>
+<span class="c1">#             &quot;phone_num&quot;: &quot;+9876543210&quot;</span>
+<span class="c1">#         }</span>
+<span class="c1">#     },</span>
+<span class="c1">#     &quot;account_status&quot;: &quot;ACTIVE&quot;,  # uppercased</span>
+<span class="c1">#     &quot;created_at&quot;: &quot;2023-10-01T12:00:00Z&quot;,</span>
+<span class="c1">#     &quot;metadata&quot;: {</span>
+<span class="c1">#         &quot;tags&quot;: [&quot;vip&quot;],</span>
+<span class="c1">#         &quot;preferences&quot;: {&quot;notifications&quot;: False}</span>
+<span class="c1">#     }</span>
+<span class="c1"># }</span>
+</code></pre></div>
+<h3 id="handling-missing-fields">Handling Missing Fields</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Incomplete ParagoN response (missing optional fields)</span>
+<span class="n">incomplete_response</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;99999&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;personal_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span>
+        <span class="c1"># No lastName, contact info, etc.</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;account_status&quot;</span><span class="p">:</span> <span class="s2">&quot;PENDING&quot;</span>
+    <span class="c1"># No created_at, metadata</span>
+<span class="p">}</span>
 
-<span class="c1"># Composable adapters</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fetch_user_validated</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="n">paragon_client</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="n">paragon_response</span> <span class="o">=</span> <span class="n">paragon_client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+<span class="c1"># Adapter safely handles missing nested fields</span>
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">ParagoNUserAdapter</span><span class="p">(</span><span class="n">incomplete_response</span><span class="p">)</span>
+<span class="n">internal</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>
 
-    <span class="c1"># Chain adapters for validation + normalization</span>
-    <span class="n">adapter</span> <span class="o">=</span> <span class="n">ValidationAdapter</span><span class="p">(</span><span class="n">paragon_response</span><span class="p">)</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">to_internal</span><span class="p">()</span>  <span class="c1"># Validates and normalizes</span>
-
-    <span class="k">return</span> <span class="n">user</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">internal</span><span class="p">)</span>
+<span class="c1"># {</span>
+<span class="c1">#     &quot;id&quot;: &quot;99999&quot;,</span>
+<span class="c1">#     &quot;firstName&quot;: &quot;Bob&quot;,</span>
+<span class="c1">#     &quot;lastName&quot;: None,  # Missing field</span>
+<span class="c1">#     &quot;email&quot;: None,</span>
+<span class="c1">#     &quot;phone&quot;: None,</span>
+<span class="c1">#     &quot;status&quot;: &quot;pending&quot;,</span>
+<span class="c1">#     &quot;createdAt&quot;: None,</span>
+<span class="c1">#     &quot;tags&quot;: [],  # Default empty list</span>
+<span class="c1">#     &quot;preferences&quot;: {}  # Default empty dict</span>
+<span class="c1"># }</span>
 </code></pre></div>
 <h2 id="advantages-disadvantages">Advantages &amp; Disadvantages</h2>
 <table>

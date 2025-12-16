@@ -1108,30 +1108,45 @@
 <p>Create a class that enforces single instantiation:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClientManager</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagonNSingleton</span><span class="p">:</span>
     <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="c1"># Simulate fetching a token using the API key</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_token</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagonNSingletonManager</span><span class="p">:</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span> 
+    <span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Use get_instance() method to get the singleton instance.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span> 
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ParagonNSingletonManager&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">ParagonNSingletonManager</span><span class="p">)</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">ParagonNSingleton</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_client</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_create_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Lazy initialization of ParagoNClient</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">paragon_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParagoNClient</span>
-        <span class="k">return</span> <span class="n">ParagoNClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PARAGON_API_KEY&quot;</span><span class="p">))</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParagonNSingleton</span><span class="p">:</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">client</span>
 </code></pre></div>
 <h2 id="key-features">Key Features</h2>
 <ul>
@@ -1141,16 +1156,24 @@
 <li><strong>Credentials managed</strong>: API keys loaded once per process</li>
 </ul>
 <h2 id="usage-in-your-code">Usage in Your Code</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># In request handler</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">handle_user_request</span><span class="p">(</span><span class="n">user_id</span><span class="p">):</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">serialize_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get singleton client instance</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
 
-<span class="c1"># In background worker</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">background_job</span><span class="p">():</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="c1"># Process in parallel safely</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>  <span class="c1"># True - both are the same instance</span>
+
+<span class="c1"># Thread-safe access</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">access_client</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">refresh_token</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Token: </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">access_client</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="advantages-disadvantages">Advantages &amp; Disadvantages</h2>
 <table>

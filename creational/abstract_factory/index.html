@@ -1111,103 +1111,98 @@
 <h2 id="solution">Solution</h2>
 <p>Define abstract interfaces and provider-specific factories:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
 
-<span class="c1"># Abstract interfaces</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">AuthClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">):</span>
-        <span class="k">pass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Provider</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PARAGON</span> <span class="o">=</span> <span class="s2">&quot;paragon&quot;</span>
+    <span class="n">ANOTHER_API</span> <span class="o">=</span> <span class="s2">&quot;another_api&quot;</span>
+    <span class="n">MOCK</span> <span class="o">=</span> <span class="s2">&quot;mock&quot;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">DataClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseAuthClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-        <span class="k">pass</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">WebhookClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDataClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-        <span class="k">pass</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseWebhookClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseClientFactory</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseAuthClient</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataClient</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseWebhookClient</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 <span class="c1"># ParagoN implementations</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNAuthClient</span><span class="p">(</span><span class="n">AuthClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">):</span>
-        <span class="c1"># ParagoN-specific auth logic</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;paragon_token_123&quot;</span><span class="p">}</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNDataClient</span><span class="p">(</span><span class="n">DataClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-        <span class="c1"># ParagoN API call</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[]}</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNWebhookClient</span><span class="p">(</span><span class="n">WebhookClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-        <span class="c1"># Register webhook with ParagoN</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNAuthClient</span><span class="p">(</span><span class="n">BaseAuthClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">pass</span>
 
-<span class="c1"># Another provider implementations</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">AnotherAuthClient</span><span class="p">(</span><span class="n">AuthClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">):</span>
-        <span class="c1"># Different auth scheme</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;another_session_456&quot;</span><span class="p">}</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNDataClient</span><span class="p">(</span><span class="n">BaseDataClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">AnotherDataClient</span><span class="p">(</span><span class="n">DataClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-        <span class="c1"># Different API structure</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">[]}</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnotherWebhookClient</span><span class="p">(</span><span class="n">WebhookClient</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-        <span class="c1"># Different webhook registration</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNWebhookClient</span><span class="p">(</span><span class="n">BaseWebhookClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span>
 
-<span class="c1"># Abstract Factory</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">EcosystemFactory</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthClient</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataClient</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WebhookClient</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-<span class="c1"># Concrete factories</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNFactory</span><span class="p">(</span><span class="n">EcosystemFactory</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClientFactory</span><span class="p">(</span><span class="n">BaseClientFactory</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseAuthClient</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ParagoNAuthClient</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataClient</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ParagoNDataClient</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseWebhookClient</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ParagoNWebhookClient</span><span class="p">()</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">AnotherFactory</span><span class="p">(</span><span class="n">EcosystemFactory</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">AnotherAuthClient</span><span class="p">()</span>
+<span class="c1"># Mock implementations for testing</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MockAuthClient</span><span class="p">(</span><span class="n">BaseAuthClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">AnotherDataClient</span><span class="p">()</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MockDataClient</span><span class="p">(</span><span class="n">BaseDataClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">AnotherWebhookClient</span><span class="p">()</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MockWebhookClient</span><span class="p">(</span><span class="n">BaseWebhookClient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
 
-<span class="c1"># Factory selector</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_ecosystem_factory</span><span class="p">(</span><span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EcosystemFactory</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;paragon&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ParagoNFactory</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;another&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">AnotherFactory</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown provider: </span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MockClientFactory</span><span class="p">(</span><span class="n">BaseClientFactory</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseAuthClient</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MockAuthClient</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataClient</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MockDataClient</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseWebhookClient</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MockWebhookClient</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_factory</span><span class="p">(</span><span class="n">provider_name</span><span class="p">:</span> <span class="n">Provider</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseClientFactory</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">provider_name</span> <span class="o">==</span> <span class="n">Provider</span><span class="o">.</span><span class="n">PARAGON</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ParagoNClientFactory</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">provider_name</span> <span class="o">==</span> <span class="n">Provider</span><span class="o">.</span><span class="n">MOCK</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MockClientFactory</span><span class="p">()</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown provider: </span><span class="si">{</span><span class="n">provider_name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="usage">Usage</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Configuration-driven ecosystem setup</span>
-<span class="n">provider</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ECOSYSTEM_PROVIDER&quot;</span><span class="p">,</span> <span class="s2">&quot;paragon&quot;</span><span class="p">)</span>
-<span class="n">factory</span> <span class="o">=</span> <span class="n">get_ecosystem_factory</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+<span class="n">provider</span> <span class="o">=</span> <span class="n">Provider</span><span class="o">.</span><span class="n">PARAGON</span>
+<span class="n">factory</span> <span class="o">=</span> <span class="n">load_factory</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
 
 <span class="c1"># Create a coordinated set of clients</span>
 <span class="n">auth_client</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_auth_client</span><span class="p">()</span>
@@ -1215,10 +1210,14 @@
 <span class="n">webhook_client</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_webhook_client</span><span class="p">()</span>
 
 <span class="c1"># All three work together seamlessly</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">initialize_ecosystem</span><span class="p">():</span>
-    <span class="n">auth_client</span><span class="o">.</span><span class="n">authenticate</span><span class="p">({</span><span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">})</span>
-    <span class="n">webhook_client</span><span class="o">.</span><span class="n">register_webhook</span><span class="p">(</span><span class="s2">&quot;https://my-app.com/webhooks&quot;</span><span class="p">)</span>
-    <span class="c1"># data_client is ready for queries</span>
+<span class="n">auth_client</span><span class="o">.</span><span class="n">authenticate</span><span class="p">({</span><span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">})</span>
+<span class="n">webhook_client</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">({</span><span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;user_created&quot;</span><span class="p">})</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users&quot;</span><span class="p">)</span>
+
+<span class="c1"># Easy to switch to testing</span>
+<span class="n">test_factory</span> <span class="o">=</span> <span class="n">load_factory</span><span class="p">(</span><span class="n">Provider</span><span class="o">.</span><span class="n">MOCK</span><span class="p">)</span>
+<span class="n">test_auth</span> <span class="o">=</span> <span class="n">test_factory</span><span class="o">.</span><span class="n">create_auth_client</span><span class="p">()</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">test_factory</span><span class="o">.</span><span class="n">create_data_client</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="benefits">Benefits</h2>
 <ul>
@@ -1228,21 +1227,17 @@
 <li><strong>Extensibility</strong>: Adding a new provider requires only one new factory class</li>
 </ul>
 <h2 id="testing-example">Testing Example</h2>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MockEcosystemFactory</span><span class="p">(</span><span class="n">EcosystemFactory</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_auth_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">MockAuthClient</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ecosystem_integration</span><span class="p">():</span>
+    <span class="c1"># Use mock factory for testing</span>
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">load_factory</span><span class="p">(</span><span class="n">Provider</span><span class="o">.</span><span class="n">MOCK</span><span class="p">)</span>
+    <span class="n">auth_client</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_auth_client</span><span class="p">()</span>
+    <span class="n">data_client</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_data_client</span><span class="p">()</span>
+    <span class="n">webhook_client</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_webhook_client</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">MockDataClient</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_webhook_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">MockWebhookClient</span><span class="p">()</span>
-
-<span class="c1"># In tests</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_ecosystem_integration</span><span class="p">():</span>
-    <span class="n">factory</span> <span class="o">=</span> <span class="n">MockEcosystemFactory</span><span class="p">()</span>
     <span class="c1"># All clients are now mocked</span>
-    <span class="n">initialize_ecosystem</span><span class="p">()</span>
+    <span class="n">auth_client</span><span class="o">.</span><span class="n">authenticate</span><span class="p">({})</span>
+    <span class="n">webhook_client</span><span class="o">.</span><span class="n">send_webhook</span><span class="p">({})</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 
