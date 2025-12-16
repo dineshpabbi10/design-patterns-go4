@@ -1,0 +1,56 @@
+site_name: Gang of Four Design Patterns
+site_description: Interactive documentation for design patterns tailored to microservices, React frontends, and Spark pipelines
+site_author: Dinesh Pabbi
+repo_url: https://github.com/dineshpabbi10/design-patterns-gog
+repo_name: design-patterns-gog
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: light blue
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - tables
+
+nav:
+  - Home: index.md
+  - Creational Patterns:
+    - Overview: creational/index.md
+    - Singleton: creational/singleton.md
+    - Factory Method: creational/factory_method.md
+    - Abstract Factory: creational/abstract_factory.md
+    - Builder: creational/builder.md
+    - Prototype: creational/prototype.md
+  - Structural Patterns:
+    - Overview: structural/index.md
+    - Adapter: structural/adapter.md
+    - Bridge: structural/bridge.md
+    - Composite: structural/composite.md
+    - Decorator: structural/decorator.md
+    - Facade: structural/facade.md
+    - Flyweight: structural/flyweight.md
+    - Proxy: structural/proxy.md
+  - Behavioral Patterns:
+    - Overview: behavioral/index.md
