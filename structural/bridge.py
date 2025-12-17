@@ -332,7 +332,7 @@ def test_mock_storage_write_read_delete():
 def test_ingest_job_with_mock_storage():
     backend = MockStorage()
     ingest_job = IngestJob(backend)
-    key = "ingest_key"
+    key = "ingest_key" 
     data = b"ingest data"
     ingest_job.execute(key, data)
     assert backend.exists(key) == True

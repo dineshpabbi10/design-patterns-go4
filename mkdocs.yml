@@ -1,7 +1,7 @@
 site_name: Gang of Four Design Patterns
 site_description: Interactive documentation for design patterns tailored to microservices, React frontends, and Spark pipelines
 site_author: Dinesh Pabbi
-repo_url: https://github.com/dineshpabbi10/design-patterns-gog
+repo_url: https://github.com/dineshpabbi10/design-patterns-go4
 repo_name: design-patterns-go4
 
 theme:
