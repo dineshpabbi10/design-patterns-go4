@@ -4,7 +4,7 @@ Interactive documentation for **23 Gang of Four design patterns** tailored to mi
 
 ## 🌐 Documentation
 
-**[View the interactive docs →](https://dineshpabbi10.github.io/design-patterns-gog/)**
+**[View the interactive docs →](https://dineshpabbi10.github.io/design-patterns-go4/)**
 
 ## Overview
 
@@ -145,4 +145,4 @@ MIT License - feel free to use in your projects
 ---
 
 **Last Updated**: December 2025  
-**Documentation**: [https://dineshpabbi10.github.io/design-patterns-gog/](https://dineshpabbi10.github.io/design-patterns-gog/)
+**Documentation**: [https://dineshpabbi10.github.io/design-patterns-gog/](https://dineshpabbi10.github.io/design-patterns-go4/)
