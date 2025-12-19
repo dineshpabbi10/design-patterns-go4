@@ -22,9 +22,20 @@ class ParagoNClient:
         print(f"Updating user {user_id} with data {data} in ParagoN API")
         return True
 
-class RetryingClient(ParagoNClient):
-    def __init__(self, client: ParagoNClient, retries: int = 3):
+class BaseDecorator:
+    def __init__(self, client: ParagoNClient):
         self.client = client
+
+    def get_user(self, user_id: str) -> dict:
+        return self.client.get_user(user_id)
+    
+    def update_user(self, user_id: str, data: dict) -> bool:
+        return self.client.update_user(user_id, data)
+
+
+class RetryingClient(BaseDecorator):
+    def __init__(self, client: ParagoNClient, retries: int = 3):
+        super().__init__(client)
         self.retries = retries
 
     def retry_func(self, func, *args, **kwargs):
@@ -32,7 +43,7 @@ class RetryingClient(ParagoNClient):
             try:
                 # Randomly simulate failure for demonstration
                 print(f"Attempt {attempt + 1} for {func.__name__}")
-                if random.random() < 0.5:  # 30% chance of failure
+                if random.random() < 0.3:  # 30% chance of failure
                     raise Exception("Simulated network error")
                 
                 return func(*args, **kwargs)
@@ -42,15 +53,14 @@ class RetryingClient(ParagoNClient):
                     raise e
 
     def get_user(self, user_id: str) -> dict:
-        return self.retry_func(self.client.get_user, user_id)
+        return self.retry_func(super().get_user, user_id)
 
     def update_user(self, user_id: str, data: dict) -> bool:
-        return self.retry_func(self.client.update_user, user_id, data)
+        return self.retry_func(super().update_user, user_id, data)
 
-
-class TracingClient(ParagoNClient):
+class TracingClient(BaseDecorator):
     def __init__(self, client: ParagoNClient):
-        self.client = client
+        super().__init__(client)
 
     def trace_func(self, func, *args, **kwargs):
         print(f"Tracing start: {func.__name__} with args: {args}, kwargs: {kwargs}")
@@ -63,10 +73,26 @@ class TracingClient(ParagoNClient):
         return result
 
     def get_user(self, user_id: str) -> dict:
-        return self.trace_func(self.client.get_user, user_id)
+        return self.trace_func(super().get_user, user_id)
 
     def update_user(self, user_id: str, data: dict) -> bool:
-        return self.trace_func(self.client.update_user, user_id, data)
+        return self.trace_func(super().update_user, user_id, data)
+
+class ParagonClientConfig:
+    def __init__(self, enable_retries: bool = True, enable_tracing: bool = True, retries: int = 3):
+        self.enable_retries = enable_retries
+        self.enable_tracing = enable_tracing
+        self.retries = retries
+
+    def get_client(self) -> ParagoNClient:
+        base_client = ParagoNClient()
+        client = base_client
+        if self.enable_retries:
+            client = RetryingClient(client, retries=self.retries)
+        if self.enable_tracing:
+            client = TracingClient(client)
+        return client
+
 
 
 ### Example usage:
@@ -86,3 +112,35 @@ retrying_update_status = retrying_client.update_user("12345", {"name": "Jane Doe
 # Test Trace Client
 user_data = tracing_client.get_user("12345")
 update_status = tracing_client.update_user("12345", {"name": "Jane Doe"})
+
+
+# Unit Tests
+
+def test_decorated_client():
+    config = ParagonClientConfig(enable_retries=True, enable_tracing=True, retries=2)
+    client = config.get_client()
+
+    user_data = client.get_user("12345")
+    assert user_data["user_id"] == "12345"
+
+    update_status = client.update_user("12345", {"name": "Jane Doe"})
+    assert update_status is True
+
+def test_retry_logic():
+    base_client = ParagoNClient()
+    retrying_client = RetryingClient(base_client, retries=5)
+
+    user_data = retrying_client.get_user("12345")
+    assert user_data["user_id"] == "12345"
+
+def test_tracing_logic(capfd):
+    base_client = ParagoNClient()
+    tracing_client = TracingClient(base_client)
+
+    user_data = tracing_client.get_user("12345")
+    assert user_data["user_id"] == "12345"
+
+    out, err = capfd.readouterr()
+    assert "Tracing start: get_user" in out
+    assert "Tracing end: get_user" in out
+
