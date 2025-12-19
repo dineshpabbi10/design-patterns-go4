@@ -12,7 +12,7 @@ Currently, your ingestion logic is tightly coupled to specific storage implement
 # ❌ Current approach: storage backend logic mixed into ingestion
 def execute_etl(job_spec, backend_type):
     # ... data processing logic ...
-    
+
     if backend_type == "s3":
         boto3.client("s3").put_object(Bucket="data-lake", Key="output", Body=processed_data)
     elif backend_type == "gcs":
@@ -69,6 +69,8 @@ The bridge allows:
 
 from abc import ABC, abstractmethod
 from threading import Lock
+
+
 class StorageBackend(ABC):
     @abstractmethod
     def write(self, key: str, data: bytes):
@@ -77,19 +79,19 @@ class StorageBackend(ABC):
     @abstractmethod
     def update(self, key: str, data: bytes):
         raise NotImplementedError("update method not implemented")
-    
+
     @abstractmethod
     def read(self, key: str) -> bytes:
         """
         Read data from the backend.
-        
+
         Args:
             key (str): The key or identifier for the data to read.
         Returns:
             bytes: The data read from the backend.
         """
         raise NotImplementedError("read method not implemented")
-    
+
     @abstractmethod
     def exists(self, key: str) -> bool:
         """Check if data exists in the backend.
@@ -100,7 +102,7 @@ class StorageBackend(ABC):
             bool: True if the data exists, False otherwise.
         """
         raise NotImplementedError("exists method not implemented")
-    
+
     @abstractmethod
     def delete(self, key: str):
         """Delete data from the backend.
@@ -112,28 +114,32 @@ class StorageBackend(ABC):
 
 class S3Storage(StorageBackend):
     update_lock = Lock()
+
     def __init__(self, bucket_name: str):
         import boto3
+
         self.s3_client = boto3.client("s3")
         self.bucket_name = bucket_name
 
     def write(self, key: str, data: bytes):
         with self.update_lock:
-            if(not self.exists(key)):
+            if not self.exists(key):
                 self.s3_client.put_object(Bucket=self.bucket_name, Key=key, Body=data)
             else:
                 print(f"Data with key {key} already exists in S3. Skipping write.")
 
     def update(self, key: str, data: bytes):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 self.s3_client.put_object(Bucket=self.bucket_name, Key=key, Body=data)
             else:
-                raise KeyError(f"Key {key} does not exist in S3. Cannot update non-existent key.")
+                raise KeyError(
+                    f"Key {key} does not exist in S3. Cannot update non-existent key."
+                )
 
     def read(self, key: str) -> bytes:
         response = self.s3_client.get_object(Bucket=self.bucket_name, Key=key)
-        return response['Body'].read()
+        return response["Body"].read()
 
     def exists(self, key: str) -> bool:
         try:
@@ -144,7 +150,7 @@ class S3Storage(StorageBackend):
 
     def delete(self, key: str):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 self.s3_client.delete_object(Bucket=self.bucket_name, Key=key)
 
 
@@ -153,38 +159,46 @@ class LocalStorage(StorageBackend):
 
     def __init__(self, base_path: str):
         import os
+
         self.base_path = base_path
         os.makedirs(base_path, exist_ok=True)
 
     def write(self, key: str, data: bytes):
         with self.update_lock:
-            if(not self.exists(key)):
+            if not self.exists(key):
                 with open(f"{self.base_path}/{key}", "wb") as f:
                     f.write(data)
             else:
-                print(f"Data with key {key} already exists in Local Storage. Skipping write.")
+                print(
+                    f"Data with key {key} already exists in Local Storage. Skipping write."
+                )
 
     def update(self, key: str, data: bytes):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 with open(f"{self.base_path}/{key}", "wb") as f:
                     f.write(data)
             else:
-                raise KeyError(f"Key {key} does not exist in Local Storage. Cannot update non-existent key.")
-            
+                raise KeyError(
+                    f"Key {key} does not exist in Local Storage. Cannot update non-existent key."
+                )
+
     def read(self, key: str) -> bytes:
         with open(f"{self.base_path}/{key}", "rb") as f:
             return f.read()
 
     def exists(self, key: str) -> bool:
         import os
+
         return os.path.exists(f"{self.base_path}/{key}")
 
     def delete(self, key: str):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 import os
+
                 os.remove(f"{self.base_path}/{key}")
+
 
 class MockStorage(StorageBackend):
     update_lock = Lock()
@@ -194,18 +208,22 @@ class MockStorage(StorageBackend):
 
     def write(self, key: str, data: bytes):
         with self.update_lock:
-            if(not self.exists(key)):
+            if not self.exists(key):
                 self.storage[key] = data
             else:
-                print(f"Data with key {key} already exists in Mock Storage. Skipping write.")
+                print(
+                    f"Data with key {key} already exists in Mock Storage. Skipping write."
+                )
 
     def update(self, key: str, data: bytes):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 self.storage[key] = data
             else:
-                raise KeyError(f"Key {key} does not exist in Mock Storage. Cannot update non-existent key.")
-            
+                raise KeyError(
+                    f"Key {key} does not exist in Mock Storage. Cannot update non-existent key."
+                )
+
     def read(self, key: str) -> bytes:
         return self.storage[key]
 
@@ -214,31 +232,38 @@ class MockStorage(StorageBackend):
 
     def delete(self, key: str):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 del self.storage[key]
+
 
 class GCSStorage(StorageBackend):
     update_lock = Lock()
+
     def __init__(self, bucket_name: str):
         from google.cloud import storage
+
         self.client = storage.Client()
         self.bucket = self.client.bucket(bucket_name)
 
     def write(self, key: str, data: bytes):
         with self.update_lock:
-            if(not self.exists(key)):
+            if not self.exists(key):
                 blob = self.bucket.blob(key)
                 blob.upload_from_string(data)
             else:
-                print(f"Data with key {key} already exists in GCS Storage. Skipping write.")
+                print(
+                    f"Data with key {key} already exists in GCS Storage. Skipping write."
+                )
 
     def update(self, key: str, data: bytes):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 blob = self.bucket.blob(key)
                 blob.upload_from_string(data)
             else:
-                raise KeyError(f"Key {key} does not exist in GCS Storage. Cannot update non-existent key.")
+                raise KeyError(
+                    f"Key {key} does not exist in GCS Storage. Cannot update non-existent key."
+                )
 
     def read(self, key: str) -> bytes:
         blob = self.bucket.blob(key)
@@ -250,9 +275,10 @@ class GCSStorage(StorageBackend):
 
     def delete(self, key: str):
         with self.update_lock:
-            if(self.exists(key)):
+            if self.exists(key):
                 blob = self.bucket.blob(key)
                 blob.delete()
+
 
 class IngestJob:
     def __init__(self, backend: "StorageBackend"):
@@ -278,6 +304,7 @@ ingest_job_mock.execute("example_key", b"sample data in mock")
 import threading
 import time
 
+
 def ingest_with_log(backend: StorageBackend, key: str, data: bytes, thread_id: int):
     """Ingest with thread logging."""
     print(f"  Thread-{thread_id}: Starting write to '{key}'")
@@ -287,13 +314,16 @@ def ingest_with_log(backend: StorageBackend, key: str, data: bytes, thread_id: i
     elapsed = (time.time() - start) * 1000
     print(f"  Thread-{thread_id}: Completed in {elapsed:.2f}ms")
 
+
 print("\n--- Threading Test: 5 threads writing to same key ---")
 concurrent_mock = MockStorage()
 threads = []
 start_time = time.time()
 
 for i in range(5):
-    t = threading.Thread(target=ingest_with_log, args=(concurrent_mock, "shared_key", b"data", i))
+    t = threading.Thread(
+        target=ingest_with_log, args=(concurrent_mock, "shared_key", b"data", i)
+    )
     threads.append(t)
     t.start()
 
@@ -303,6 +333,7 @@ for t in threads:
 total_time = (time.time() - start_time) * 1000
 print(f"Total time: {total_time:.2f}ms")
 print(f"Final data in storage: {list(concurrent_mock.storage.keys())}")
+
 
 ### Pytest for the Bridge Pattern Implementation
 def test_local_storage_write_read_delete():
@@ -317,6 +348,7 @@ def test_local_storage_write_read_delete():
     backend.delete(key)
     assert backend.exists(key) == False
 
+
 def test_mock_storage_write_read_delete():
     backend = MockStorage()
     key = "test_key"
@@ -328,11 +360,12 @@ def test_mock_storage_write_read_delete():
     backend.delete(key)
     assert backend.exists(key) == False
 
+
 # Test class IngestJob:
 def test_ingest_job_with_mock_storage():
     backend = MockStorage()
     ingest_job = IngestJob(backend)
-    key = "ingest_key" 
+    key = "ingest_key"
     data = b"ingest data"
     ingest_job.execute(key, data)
     assert backend.exists(key) == True

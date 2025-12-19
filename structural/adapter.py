@@ -54,21 +54,23 @@ Constraints & hints:
 - Support partial updates and error handling for malformed responses.
 - Allow adapters to be easily extended or swapped for different API versions.
 
-Deliverable: 
+Deliverable:
 - Define an abstract Adapter interface with methods for to_internal() and to_external().
 - Implement a concrete ParagoNUserAdapter class that maps ParagoN API responses to your internal User model and vice versa.
 - Include unit tests demonstrating the adapter's functionality, including edge cases like missing fields and type conversions.
 """
+
 from abc import ABC, abstractmethod
 
+
 class BaseAdapterModel(ABC):
-    def __init__(self,external_data: dict):
+    def __init__(self, external_data: dict):
         self.external_data = external_data
 
     @abstractmethod
     def to_internal(self) -> dict:
         raise NotImplementedError("to_internal method not implemented")
-    
+
     @abstractmethod
     def to_external(self) -> dict:
         raise NotImplementedError("to_external method not implemented")
@@ -110,10 +112,11 @@ class ParagoNUserAdapter(BaseAdapterModel):
             },
         }
         return external_data
-    
 
-import pytest 
+
+import pytest
 import copy
+
 
 @pytest.fixture
 def paragon_user_data():
@@ -135,6 +138,7 @@ def paragon_user_data():
         },
     }
 
+
 @pytest.fixture
 def expected_user_data():
     return {
@@ -149,20 +153,23 @@ def expected_user_data():
         "preferences": {"notifications": True},
     }
 
+
 class TestParagoNUserAdapter:
-    def test_to_internal_complete_data(self,paragon_user_data,expected_user_data):
+    def test_to_internal_complete_data(self, paragon_user_data, expected_user_data):
         external_data = paragon_user_data
         adapter = ParagoNUserAdapter(external_data)
         result = adapter.to_internal()
         assert result == expected_user_data
-                
-    def test_to_external_complete_data(self,paragon_user_data,expected_user_data):
+
+    def test_to_external_complete_data(self, paragon_user_data, expected_user_data):
         internal_data = expected_user_data
         adapter = ParagoNUserAdapter(internal_data)
         result = adapter.to_external()
         assert result == paragon_user_data
 
-    def test_to_internal_missing_optional_fields(self, paragon_user_data, expected_user_data):
+    def test_to_internal_missing_optional_fields(
+        self, paragon_user_data, expected_user_data
+    ):
         external_data = copy.deepcopy(paragon_user_data)
         del external_data["metadata"]["tags"]
         adapter = ParagoNUserAdapter(external_data)
@@ -170,5 +177,3 @@ class TestParagoNUserAdapter:
         expected_data = copy.deepcopy(expected_user_data)
         expected_data["tags"] = []
         assert result == expected_data
-
-    

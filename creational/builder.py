@@ -11,7 +11,6 @@ Constraints & hints:
 Deliverable: implement a `SparkJobBuilder` API that callers in orchestration code can use to produce job specs.
 """
 
-
 from copy import deepcopy
 
 
@@ -26,8 +25,17 @@ class SparkJobSpec:
         "spec_version",
     )
 
-
-    def __init__(self,*, input_source, transforms, windowing, triggers, resources, monitoring_hooks, spec_version="1.0"):
+    def __init__(
+        self,
+        *,
+        input_source,
+        transforms,
+        windowing,
+        triggers,
+        resources,
+        monitoring_hooks,
+        spec_version="1.0"
+    ):
         object.__setattr__(self, "input_source", input_source)
         object.__setattr__(self, "transforms", tuple(transforms))
         object.__setattr__(self, "windowing", windowing)
@@ -54,6 +62,7 @@ class SparkJobSpec:
             "monitoring_hooks": self.monitoring_hooks,
         }
 
+
 class SparkJobBuilder:
     def __init__(self):
         self._input_source = None
@@ -67,15 +76,15 @@ class SparkJobBuilder:
     def input_source(self, source):
         self._input_source = source
         return self
-    
+
     def set_transforms(self, transforms):
         self._transforms = transforms
         return self
-    
+
     def windowing(self, windowing):
         self._windowing = windowing
         return self
-    
+
     def triggers(self, triggers):
         self._triggers = triggers
         return self
@@ -83,15 +92,15 @@ class SparkJobBuilder:
     def resources(self, resources):
         self._resources = resources
         return self
-    
+
     def monitoring_hooks(self, hooks):
         self._monitoring_hooks = hooks
         return self
-    
+
     def spec_version(self, version):
         self._spec_version = version
         return self
-    
+
     def build(self):
         return SparkJobSpec(
             input_source=self._input_source,
@@ -100,5 +109,5 @@ class SparkJobBuilder:
             triggers=self._triggers,
             resources=self._resources,
             monitoring_hooks=self._monitoring_hooks,
-            spec_version=self._spec_version
+            spec_version=self._spec_version,
         )

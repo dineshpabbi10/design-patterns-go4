@@ -369,7 +369,14 @@ def test_ingest_job_with_mock_storage():
 
 ## Benefits
 
+// Add performance considerations
 | Pros | Cons |
+|------|------|
+| Decouple job logic from storage | Extra abstraction layers |
+| Add new backends without changing job code | More code upfront |
+| Easy to test with mock storage | Potential performance overhead |
+| Swap backends at runtime | Interface mismatches between backends |
+| Support multi-cloud deployments | |
 |------|------|
 | Decouple job logic from storage | Extra abstraction layers |
 | Add new backends without changing job code | More code upfront |
