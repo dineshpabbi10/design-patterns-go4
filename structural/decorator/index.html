@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#decorator-pattern" class="md-skip">
+        <a href="#decorator-pattern-cross-cutting-features-for-api-clients" class="md-skip">
           Skip to content
         </a>
       
@@ -835,46 +835,174 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
+    <nav class="md-nav" aria-label="Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Solution
+        Challenges
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#chainable-composition" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#without-decorators" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chainable Composition
+        ❌ Without Decorators
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-based-decorator-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration-Based Decorator Selection
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
+  <a href="#solution-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: Decorator Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution: Decorator Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#advantages" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Advantages
+        Advantages:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Decorator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrying-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrying Decorator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tracing Decorator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-driven-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration-Driven Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
       
     </span>
   </a>
@@ -1090,180 +1218,175 @@
   
 
 
-<h1 id="decorator-pattern">Decorator Pattern</h1>
+<h1 id="decorator-pattern-cross-cutting-features-for-api-clients">Decorator Pattern – Cross-Cutting Features for API Clients</h1>
 <h2 id="problem">Problem</h2>
-<p>You want to add <strong>cross-cutting features</strong> to API clients (retries, logging, metrics, tracing) without modifying their code:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># ❌ Without decorators: bloated client class</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClient</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
-        <span class="c1"># retry logic</span>
+<p>You want to add <strong>cross-cutting features</strong> to API clients like <code>ParagoNClient</code> <strong>without modifying their code</strong>. Typical features include:</p>
+<ul>
+<li>🔁 Retries</li>
+<li>🧵 Tracing</li>
+<li>📊 Metrics / Logging</li>
+</ul>
+<h3 id="challenges">Challenges</h3>
+<ul>
+<li>Features must be <strong>chainable</strong> and <strong>order-sensitive</strong></li>
+<li>Wrapper overhead must be minimal for <strong>high-frequency calls</strong></li>
+<li>Ability to <strong>enable/disable</strong> features via configuration</li>
+</ul>
+<hr />
+<h3 id="without-decorators">❌ Without Decorators</h3>
+<p>Embedding retries or tracing directly in the client:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClient</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tracing start&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># logging</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="c1"># actual call</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.paragon.io/users/</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="c1"># tracing</span>
-                <span class="n">span</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="s2">&quot;fetch_user_success&quot;</span><span class="p">)</span>
-                <span class="c1"># metrics</span>
-                <span class="n">metrics</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s2">&quot;paragon_api_calls&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># error handling</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">span</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="s2">&quot;fetch_user_error&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calling API&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">}</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrying...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tracing end&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>This is messy, hard to maintain, and makes the client class do too much.</p>
-<h2 id="solution">Solution</h2>
-<p>Use Decorators to wrap clients and add behavior dynamically:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<p><strong>Problems</strong>:</p>
+<ul>
+<li>Violates <strong>Single Responsibility Principle</strong></li>
+<li>Hard to test or extend</li>
+<li>Cannot selectively enable/disable features</li>
+</ul>
+<hr />
+<h2 id="solution-decorator-pattern">Solution: Decorator Pattern</h2>
+<p>Wrap the client with <strong>decorators</strong> for each feature:</p>
+<div class="highlight"><pre><span></span><code>ParagoNClient
+     ↓
+RetryingClient
+     ↓
+TracingClient
+     ↓
+Application Code
+</code></pre></div>
+<h3 id="advantages">Advantages:</h3>
+<ul>
+<li>Each feature is <strong>isolated</strong></li>
+<li>Decorators are <strong>composable</strong></li>
+<li>Order can change behavior (e.g., trace every retry vs retry traced calls)</li>
+<li>Supports <strong>configuration-driven enable/disable</strong></li>
+</ul>
+<hr />
+<h2 id="implementation">Implementation</h2>
+<h3 id="base-client">Base Client</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClient</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">}</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-<span class="c1"># Abstract client interface</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ClientBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-
-<span class="c1"># Real client</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClient</span><span class="p">(</span><span class="n">ClientBase</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bare-bones client.&quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.paragon.io/users/</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-
-<span class="c1"># Decorator: add retries</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">RetryingClient</span><span class="p">(</span><span class="n">ClientBase</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientBase</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+<hr />
+<h3 id="base-decorator">Base Decorator</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseDecorator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ParagoNClient</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h3 id="retrying-decorator">Retrying Decorator</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RetryingClient</span><span class="p">(</span><span class="n">BaseDecorator</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ParagoNClient</span><span class="p">,</span> <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retries</span> <span class="o">=</span> <span class="n">retries</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retry_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">:</span>  <span class="c1"># simulate failure</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Simulated network error&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retry </span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="si">}</span><span class="s2"> for user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">attempt</span><span class="p">)</span>  <span class="c1"># Exponential backoff</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error on attempt </span><span class="si">{</span><span class="n">attempt</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">retries</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry_func</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_user</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
 
-<span class="c1"># Decorator: add logging</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">LoggingClient</span><span class="p">(</span><span class="n">ClientBase</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientBase</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully fetched user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">result</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to fetch user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">raise</span>
-
-
-<span class="c1"># Decorator: add metrics</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MetricsClient</span><span class="p">(</span><span class="n">ClientBase</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientBase</span><span class="p">,</span> <span class="n">metrics_registry</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics_registry</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-            <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s2">&quot;paragon_api_duration_seconds&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="s2">&quot;paragon_api_calls_total&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">})</span>
-            <span class="k">return</span> <span class="n">result</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="s2">&quot;paragon_api_calls_total&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">})</span>
-            <span class="k">raise</span>
-
-
-<span class="c1"># Decorator: add tracing</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TracingClient</span><span class="p">(</span><span class="n">ClientBase</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientBase</span><span class="p">,</span> <span class="n">tracer</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span> <span class="o">=</span> <span class="n">tracer</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;fetch_user&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">span</span><span class="p">:</span>
-            <span class="n">span</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-                <span class="n">span</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">result</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">span</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">)</span>
-                <span class="n">span</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="k">raise</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry_func</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_user</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="chainable-composition">Chainable Composition</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Base client</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">ParagoNClient</span><span class="p">()</span>
+<hr />
+<h3 id="tracing-decorator">Tracing Decorator</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TracingClient</span><span class="p">(</span><span class="n">BaseDecorator</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ParagoNClient</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
-<span class="c1"># Add decorators in order</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">LoggingClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">RetryingClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">MetricsClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">metrics_registry</span><span class="p">)</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">TracingClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">tracer</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trace_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tracing start: </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with args: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">, kwargs: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tracing end: </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
 
-<span class="c1"># Use the decorated client</span>
-<span class="n">user</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="s2">&quot;user_123&quot;</span><span class="p">)</span>
-<span class="c1"># → Tracing + Metrics + Retry + Logging automatically applied!</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_func</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_user</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_func</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_user</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="configuration-based-decorator-selection">Configuration-Based Decorator Selection</h2>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_decorated_client</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ClientBase</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create client with decorators based on configuration.&quot;&quot;&quot;</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">ParagoNClient</span><span class="p">()</span>
+<hr />
+<h3 id="configuration-driven-client">Configuration-Driven Client</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParagonClientConfig</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable_retries</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enable_tracing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_retries</span> <span class="o">=</span> <span class="n">enable_retries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_tracing</span> <span class="o">=</span> <span class="n">enable_tracing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retries</span> <span class="o">=</span> <span class="n">retries</span>
 
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_logging&quot;</span><span class="p">):</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">LoggingClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_retries&quot;</span><span class="p">):</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">RetryingClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_retries&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_metrics&quot;</span><span class="p">):</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">MetricsClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">metrics_registry</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_tracing&quot;</span><span class="p">):</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">TracingClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">tracer</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">client</span>
-
-<span class="c1"># Production</span>
-<span class="n">prod_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;enable_logging&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;enable_retries&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;max_retries&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="s2">&quot;enable_metrics&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;enable_tracing&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">prod_client</span> <span class="o">=</span> <span class="n">create_decorated_client</span><span class="p">(</span><span class="n">prod_config</span><span class="p">)</span>
-
-<span class="c1"># Testing</span>
-<span class="n">test_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;enable_logging&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;enable_retries&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;enable_metrics&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;enable_tracing&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">test_client</span> <span class="o">=</span> <span class="n">create_decorated_client</span><span class="p">(</span><span class="n">test_config</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParagoNClient</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">ParagoNClient</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_retries</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">RetryingClient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_tracing</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">TracingClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">client</span>
 </code></pre></div>
-<h2 id="advantages">Advantages</h2>
+<hr />
+<h2 id="usage-example">Usage Example</h2>
+<div class="highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">ParagonClientConfig</span><span class="p">(</span><span class="n">enable_retries</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enable_tracing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="s2">&quot;12345&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane Doe&quot;</span><span class="p">})</span>
+</code></pre></div>
+<p><strong>Order-sensitive behavior:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Trace every retry</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">TracingClient</span><span class="p">(</span><span class="n">RetryingClient</span><span class="p">(</span><span class="n">ParagoNClient</span><span class="p">()))</span>
+
+<span class="c1"># Retry traced calls</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">RetryingClient</span><span class="p">(</span><span class="n">TracingClient</span><span class="p">(</span><span class="n">ParagoNClient</span><span class="p">()))</span>
+</code></pre></div>
+<hr />
+<h2 id="unit-tests">Unit Tests</h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_decorated_client</span><span class="p">():</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ParagonClientConfig</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
+    <span class="n">user_data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="s2">&quot;12345&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;12345&quot;</span>
+    <span class="n">update_status</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane Doe&quot;</span><span class="p">})</span>
+    <span class="k">assert</span> <span class="n">update_status</span> <span class="ow">is</span> <span class="kc">True</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_tracing_logic</span><span class="p">(</span><span class="n">capfd</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TracingClient</span><span class="p">(</span><span class="n">ParagoNClient</span><span class="p">())</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="s2">&quot;12345&quot;</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">capfd</span><span class="o">.</span><span class="n">readouterr</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s2">&quot;Tracing start&quot;</span> <span class="ow">in</span> <span class="n">out</span>
+    <span class="k">assert</span> <span class="s2">&quot;Tracing end&quot;</span> <span class="ow">in</span> <span class="n">out</span>
+</code></pre></div>
+<hr />
+<h2 id="benefits">Benefits</h2>
 <table>
 <thead>
 <tr>
@@ -1273,27 +1396,31 @@
 </thead>
 <tbody>
 <tr>
-<td>Add behavior without modifying client</td>
-<td>Order of decorators matters</td>
+<td>No changes to core client</td>
+<td>Slight overhead per call</td>
 </tr>
 <tr>
-<td>Highly composable</td>
-<td>Performance overhead for each layer</td>
+<td>Features are composable</td>
+<td>Some method duplication</td>
 </tr>
 <tr>
-<td>Testable independently</td>
-<td>Can become hard to debug</td>
+<td>Order-sensitive behavior</td>
+<td>Requires interface consistency</td>
 </tr>
 <tr>
-<td>Configuration-driven</td>
+<td>Easy to test</td>
 <td></td>
 </tr>
 <tr>
-<td>Single Responsibility Principle</td>
+<td>Supports configuration-driven enable/disable</td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="summary">Summary</h2>
+<p>This implementation provides a <strong>clean, extensible, and testable</strong> approach to adding cross-cutting features to API clients using the <strong>Decorator Pattern</strong>.</p>
+<p>It allows <strong>runtime composition</strong>, <strong>configurable behavior</strong>, and ensures <strong>SRP adherence</strong>.</p>
 
 
 
