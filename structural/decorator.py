@@ -9,7 +9,9 @@ Constraints & hints:
 
 Deliverable: describe decorator wrappers (e.g., `RetryingClient`, `TracingClient`) and how to compose them.
 """
+
 import random
+
 
 class ParagoNClient:
     def get_user(self, user_id: str) -> dict:
@@ -22,13 +24,14 @@ class ParagoNClient:
         print(f"Updating user {user_id} with data {data} in ParagoN API")
         return True
 
+
 class BaseDecorator:
     def __init__(self, client: ParagoNClient):
         self.client = client
 
     def get_user(self, user_id: str) -> dict:
         return self.client.get_user(user_id)
-    
+
     def update_user(self, user_id: str, data: dict) -> bool:
         return self.client.update_user(user_id, data)
 
@@ -45,7 +48,7 @@ class RetryingClient(BaseDecorator):
                 print(f"Attempt {attempt + 1} for {func.__name__}")
                 if random.random() < 0.3:  # 30% chance of failure
                     raise Exception("Simulated network error")
-                
+
                 return func(*args, **kwargs)
             except Exception as e:
                 print(f"Error on attempt {attempt + 1}: {e}")
@@ -57,6 +60,7 @@ class RetryingClient(BaseDecorator):
 
     def update_user(self, user_id: str, data: dict) -> bool:
         return self.retry_func(super().update_user, user_id, data)
+
 
 class TracingClient(BaseDecorator):
     def __init__(self, client: ParagoNClient):
@@ -78,8 +82,11 @@ class TracingClient(BaseDecorator):
     def update_user(self, user_id: str, data: dict) -> bool:
         return self.trace_func(super().update_user, user_id, data)
 
+
 class ParagonClientConfig:
-    def __init__(self, enable_retries: bool = True, enable_tracing: bool = True, retries: int = 3):
+    def __init__(
+        self, enable_retries: bool = True, enable_tracing: bool = True, retries: int = 3
+    ):
         self.enable_retries = enable_retries
         self.enable_tracing = enable_tracing
         self.retries = retries
@@ -92,7 +99,6 @@ class ParagonClientConfig:
         if self.enable_tracing:
             client = TracingClient(client)
         return client
-
 
 
 ### Example usage:
@@ -116,6 +122,7 @@ update_status = tracing_client.update_user("12345", {"name": "Jane Doe"})
 
 # Unit Tests
 
+
 def test_decorated_client():
     config = ParagonClientConfig(enable_retries=True, enable_tracing=True, retries=2)
     client = config.get_client()
@@ -126,12 +133,14 @@ def test_decorated_client():
     update_status = client.update_user("12345", {"name": "Jane Doe"})
     assert update_status is True
 
+
 def test_retry_logic():
     base_client = ParagoNClient()
     retrying_client = RetryingClient(base_client, retries=5)
 
     user_data = retrying_client.get_user("12345")
     assert user_data["user_id"] == "12345"
+
 
 def test_tracing_logic(capfd):
     base_client = ParagoNClient()
@@ -143,4 +152,3 @@ def test_tracing_logic(capfd):
     out, err = capfd.readouterr()
     assert "Tracing start: get_user" in out
     assert "Tracing end: get_user" in out
-
