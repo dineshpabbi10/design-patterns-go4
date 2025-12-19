@@ -9,3 +9,80 @@ Constraints & hints:
 
 Deliverable: describe decorator wrappers (e.g., `RetryingClient`, `TracingClient`) and how to compose them.
 """
+import random
+
+class ParagoNClient:
+    def get_user(self, user_id: str) -> dict:
+        # Simulate an API call to get user data
+        print(f"Fetching user {user_id} from ParagoN API")
+        return {"user_id": user_id, "name": "John Doe"}
+
+    def update_user(self, user_id: str, data: dict) -> bool:
+        # Simulate an API call to update user data
+        print(f"Updating user {user_id} with data {data} in ParagoN API")
+        return True
+
+class RetryingClient(ParagoNClient):
+    def __init__(self, client: ParagoNClient, retries: int = 3):
+        self.client = client
+        self.retries = retries
+
+    def retry_func(self, func, *args, **kwargs):
+        for attempt in range(self.retries):
+            try:
+                # Randomly simulate failure for demonstration
+                print(f"Attempt {attempt + 1} for {func.__name__}")
+                if random.random() < 0.5:  # 30% chance of failure
+                    raise Exception("Simulated network error")
+                
+                return func(*args, **kwargs)
+            except Exception as e:
+                print(f"Error on attempt {attempt + 1}: {e}")
+                if attempt == self.retries - 1:
+                    raise e
+
+    def get_user(self, user_id: str) -> dict:
+        return self.retry_func(self.client.get_user, user_id)
+
+    def update_user(self, user_id: str, data: dict) -> bool:
+        return self.retry_func(self.client.update_user, user_id, data)
+
+
+class TracingClient(ParagoNClient):
+    def __init__(self, client: ParagoNClient):
+        self.client = client
+
+    def trace_func(self, func, *args, **kwargs):
+        print(f"Tracing start: {func.__name__} with args: {args}, kwargs: {kwargs}")
+        try:
+            result = func(*args, **kwargs)
+            print(f"Tracing end: {func.__name__} with result: {result}")
+        except Exception as e:
+            print(f"Tracing error in {func.__name__}: {e}")
+            raise e
+        return result
+
+    def get_user(self, user_id: str) -> dict:
+        return self.trace_func(self.client.get_user, user_id)
+
+    def update_user(self, user_id: str, data: dict) -> bool:
+        return self.trace_func(self.client.update_user, user_id, data)
+
+
+### Example usage:
+
+base_client = ParagoNClient()
+retrying_client = RetryingClient(base_client, retries=3)
+tracing_client = TracingClient(retrying_client)
+
+# Test Base Client
+base_user_data = base_client.get_user("12345")
+base_update_status = base_client.update_user("12345", {"name": "John Doe"})
+
+# Test Retry Client
+retrying_user_data = retrying_client.get_user("12345")
+retrying_update_status = retrying_client.update_user("12345", {"name": "Jane Doe"})
+
+# Test Trace Client
+user_data = tracing_client.get_user("12345")
+update_status = tracing_client.update_user("12345", {"name": "Jane Doe"})
