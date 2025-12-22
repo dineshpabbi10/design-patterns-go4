@@ -863,6 +863,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Without Facade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -877,10 +894,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#advantages" class="md-nav__link">
+  <a href="#core-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Advantages
+        Core Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-dto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request DTO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-dto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result DTO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsystem-services-hidden-behind-the-facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subsystem Services (Hidden Behind the Facade)
       
     </span>
   </a>
@@ -888,10 +944,182 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#idempotency-store" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Testing
+        Idempotency Store
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Facade
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Facade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#orchestration-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestration Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Orchestration Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-idempotency-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idempotency Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-execute-subsystems-in-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Execute Subsystems in Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-error-handling-compensation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Error Handling &amp; Compensation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-persist-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Persist Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controller-caller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller / Caller
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent-retry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent Retry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execution-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Extensions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Facade
       
     </span>
   </a>
@@ -1081,157 +1309,201 @@
 
 <h1 id="facade-pattern">Facade Pattern</h1>
 <h2 id="problem">Problem</h2>
-<p>Your <strong>onboarding subsystem</strong> involves multiple complex interactions:
-- Identity service: create user account
-- Billing service: provision subscription
-- ParagoN service: register with external provider
-- Notification service: send welcome email</p>
-<p><strong>Without Facade</strong>, controllers are cluttered with orchestration logic:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># ❌ Complex, fragmented logic</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/onboard&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">onboard_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">):</span>
-    <span class="c1"># Call identity service</span>
-    <span class="n">identity_response</span> <span class="o">=</span> <span class="n">identity_client</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">])</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">identity_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Failed to create identity&quot;</span><span class="p">}</span>
-
-    <span class="c1"># Call billing service</span>
-    <span class="n">billing_response</span> <span class="o">=</span> <span class="n">billing_client</span><span class="o">.</span><span class="n">provision_subscription</span><span class="p">(</span><span class="n">identity_response</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">billing_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-        <span class="c1"># Rollback identity?</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Failed to provision billing&quot;</span><span class="p">}</span>
-
-    <span class="c1"># Call ParagoN</span>
-    <span class="n">paragon_response</span> <span class="o">=</span> <span class="n">paragon_client</span><span class="o">.</span><span class="n">register_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">paragon_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-        <span class="c1"># Rollback billing and identity?</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Failed to register with ParagoN&quot;</span><span class="p">}</span>
-
-    <span class="c1"># Call notifications</span>
-    <span class="n">notif_response</span> <span class="o">=</span> <span class="n">notification_client</span><span class="o">.</span><span class="n">send_welcome_email</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">])</span>
-
-    <span class="c1"># Handle partial failures, rollbacks, etc...</span>
+<p>Your application includes a <strong>complex onboarding subsystem</strong> that must coordinate multiple internal and external services:</p>
+<ul>
+<li><strong>Identity service</strong> (user creation)</li>
+<li><strong>Billing service</strong> (subscription setup)</li>
+<li><strong>Third-party provider (ParagoN)</strong> for provisioning</li>
+<li><strong>Error handling and compensation</strong> when partial failures occur</li>
+<li><strong>Retry safety</strong> for frontend and service retries</li>
+</ul>
+<p>Each onboarding attempt may:</p>
+<ul>
+<li>Call multiple subsystems in a strict order</li>
+<li>Partially succeed and then fail</li>
+<li>Be retried due to network issues or client timeouts</li>
+<li>Require rollback of previously completed steps</li>
+</ul>
+<h3 id="without-facade">Without Facade</h3>
+<p>Controllers and callers end up containing <strong>orchestration logic</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ❌ Orchestration leaks into controllers</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">onboard_user_controller</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">create_identity</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+        <span class="n">create_subscription</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">plan_id</span><span class="p">)</span>
+        <span class="n">provision_paragon</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">rollback_billing</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">rollback_paragon</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">failure</span><span class="p">()</span>
 </code></pre></div>
-<p>This is messy, error-prone, and hard to reuse.</p>
+<p><strong>Problems:</strong></p>
+<ul>
+<li>Controllers become complex and fragile</li>
+<li>Orchestration logic is duplicated across callers</li>
+<li>Error recovery is inconsistent</li>
+<li>Retry behavior is unsafe without idempotency</li>
+<li>Changing onboarding steps requires touching many callers</li>
+</ul>
+<hr />
 <h2 id="solution">Solution</h2>
-<p>Create a Facade that hides the complexity behind a simple high-level API:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<p>Use the <strong>Facade Pattern</strong> to provide a <strong>single high-level API</strong> for onboarding:</p>
+<ul>
+<li><strong>OnboardingFacade</strong> → Orchestrates the full onboarding workflow</li>
+<li><strong>Subsystem services</strong> → Identity, Billing, ParagoN</li>
+<li><strong>Idempotency store</strong> → Ensures safe retries</li>
+</ul>
+<p>The Facade:</p>
+<ul>
+<li>Hides orchestration details</li>
+<li>Centralizes error handling and rollback</li>
+<li>Returns a simple success/failure result</li>
+<li>Keeps controllers and frontends thin</li>
+</ul>
+<hr />
+<h2 id="core-design">Core Design</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+</code></pre></div>
+<hr />
+<h3 id="request-dto">Request DTO</h3>
+<p>Encapsulates all data needed for onboarding.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OnboardUserRequest</span><span class="p">:</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">plan_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">idempotency_key</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div>
+<hr />
+<h3 id="result-dto">Result DTO</h3>
+<p>Simple outcome returned to callers.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OnboardUserResult</span><span class="p">:</span>
+    <span class="n">success</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<hr />
+<h2 id="subsystem-services-hidden-behind-the-facade">Subsystem Services (Hidden Behind the Facade)</h2>
+<p>These represent <strong>internal or external dependencies</strong>.
+The Facade coordinates them but callers never interact with them directly.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IdentityService</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="o">...</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BillingService</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cancel_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="o">...</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParagoNClient</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">provision_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deprovision_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="o">...</span>
+</code></pre></div>
+<hr />
+<h2 id="idempotency-store">Idempotency Store</h2>
+<p>Ensures <strong>safe retries</strong> by caching onboarding results.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IdempotencyStore</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OnboardUserResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">OnboardingStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">SUCCESS</span> <span class="o">=</span> <span class="s2">&quot;success&quot;</span>
-    <span class="n">PARTIAL_FAILURE</span> <span class="o">=</span> <span class="s2">&quot;partial_failure&quot;</span>
-    <span class="n">FAILURE</span> <span class="o">=</span> <span class="s2">&quot;failure&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OnboardUserResult</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">OnboardingResult</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">OnboardingStatus</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">OnboardingFacade</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;High-level onboarding orchestration.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identity_client</span><span class="p">,</span> <span class="n">billing_client</span><span class="p">,</span> <span class="n">paragon_client</span><span class="p">,</span> <span class="n">notification_client</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">identity</span> <span class="o">=</span> <span class="n">identity_client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">billing</span> <span class="o">=</span> <span class="n">billing_client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">paragon</span> <span class="o">=</span> <span class="n">paragon_client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">notifications</span> <span class="o">=</span> <span class="n">notification_client</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">onboard_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">OnboardingResult</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Orchestrate complete onboarding process.&quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">OnboardingResult</span><span class="p">(</span><span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Step 1: Create identity</span>
-            <span class="n">identity_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">identity_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">OnboardingResult</span><span class="p">(</span>
-                    <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">FAILURE</span><span class="p">,</span>
-                    <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Identity creation failed: </span><span class="si">{</span><span class="n">identity_response</span><span class="o">.</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">user_id</span> <span class="o">=</span> <span class="n">identity_response</span><span class="o">.</span><span class="n">user_id</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;identity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">}</span>
-
-            <span class="c1"># Step 2: Provision billing</span>
-            <span class="n">billing_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">billing</span><span class="o">.</span><span class="n">provision_subscription</span><span class="p">(</span>
-                <span class="n">user_id</span><span class="p">,</span>
-                <span class="n">plan_id</span><span class="o">=</span><span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;plan_id&quot;</span><span class="p">,</span> <span class="s2">&quot;standard&quot;</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">billing_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-                <span class="c1"># Partial failure: rollback identity</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_rollback_identity</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">OnboardingResult</span><span class="p">(</span>
-                    <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">FAILURE</span><span class="p">,</span>
-                    <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Billing provisioning failed: </span><span class="si">{</span><span class="n">billing_response</span><span class="o">.</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;billing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;subscription_id&quot;</span><span class="p">:</span> <span class="n">billing_response</span><span class="o">.</span><span class="n">subscription_id</span><span class="p">}</span>
-
-            <span class="c1"># Step 3: Register with ParagoN</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">paragon_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paragon</span><span class="o">.</span><span class="n">register_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">paragon_response</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;paragon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">}</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Non-critical failure: mark as partial</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">PARTIAL_FAILURE</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;paragon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;failed&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">paragon_response</span><span class="o">.</span><span class="n">error</span><span class="p">}</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># Log but continue</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">PARTIAL_FAILURE</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;paragon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
-
-            <span class="c1"># Step 4: Send welcome email (fire-and-forget)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">notifications</span><span class="o">.</span><span class="n">send_welcome_email</span><span class="p">(</span>
-                    <span class="n">email</span><span class="o">=</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">],</span>
-                    <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span>
-                <span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;notifications&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;sent&quot;</span><span class="p">}</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># Log but don&#39;t fail onboarding</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">&quot;notifications&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;failed&quot;</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
-
-            <span class="k">return</span> <span class="n">result</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">OnboardingResult</span><span class="p">(</span>
-                <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">FAILURE</span><span class="p">,</span>
-                <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_rollback_identity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rollback identity creation on failure.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="c1"># Log rollback failure</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rollback failed for user </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-
-<span class="c1"># Usage</span>
-<span class="n">facade</span> <span class="o">=</span> <span class="n">OnboardingFacade</span><span class="p">(</span>
-    <span class="n">identity_client</span><span class="o">=</span><span class="n">IdentityClient</span><span class="p">(),</span>
-    <span class="n">billing_client</span><span class="o">=</span><span class="n">BillingClient</span><span class="p">(),</span>
-    <span class="n">paragon_client</span><span class="o">=</span><span class="n">ParagoNClient</span><span class="p">(),</span>
-    <span class="n">notification_client</span><span class="o">=</span><span class="n">NotificationClient</span><span class="p">(),</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">OnboardUserResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</code></pre></div>
+<hr />
+<h2 id="facade">Facade</h2>
+<p>Provides a <strong>single entry point</strong> for onboarding.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OnboardingFacade</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Facade that hides onboarding orchestration, retries, and recovery</span>
+<span class="sd">    behind a single high-level API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="orchestration-flow">Orchestration Flow</h3>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span><span class="w"> </span><span class="nf">onboard_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">OnboardUserRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OnboardUserResult</span><span class="p">:</span>
+</code></pre></div>
+<h4 id="1-idempotency-check">1. Idempotency Check</h4>
+<div class="highlight"><pre><span></span><code><span class="n">cached</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idempotency_store</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">idempotency_key</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">cached</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">cached</span>
+</code></pre></div>
+<ul>
+<li>Prevents duplicate onboarding</li>
+<li>Allows safe retries from frontend or services</li>
+</ul>
+<hr />
+<h4 id="2-execute-subsystems-in-order">2. Execute Subsystems in Order</h4>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">billing</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">plan_id</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">paragon</span><span class="o">.</span><span class="n">provision_account</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Strict sequencing</li>
+<li>All orchestration is hidden from callers</li>
+</ul>
+<hr />
+<h4 id="3-error-handling-compensation">3. Error Handling &amp; Compensation</h4>
+<div class="highlight"><pre><span></span><code><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_rollback</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</code></pre></div>
+<p>Rollback is <strong>best-effort</strong> and isolated:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">OnboardUserRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">paragon</span><span class="o">.</span><span class="n">deprovision_account</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">billing</span><span class="o">.</span><span class="n">cancel_subscription</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h4 id="4-persist-result">4. Persist Result</h4>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">idempotency_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">idempotency_key</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Guarantees consistent results on retries</li>
+</ul>
+<hr />
+<h2 id="usage-example">Usage Example</h2>
+<h3 id="controller-caller">Controller / Caller</h3>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">(</span>
+    <span class="n">OnboardUserRequest</span><span class="p">(</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;user-123&quot;</span><span class="p">,</span>
+        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span>
+        <span class="n">plan_id</span><span class="o">=</span><span class="s2">&quot;pro&quot;</span><span class="p">,</span>
+        <span class="n">idempotency_key</span><span class="o">=</span><span class="s2">&quot;req-001&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="p">)</span>
 
-<span class="c1"># Controllers are now clean</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/onboard&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">onboard_user_handler</span><span class="p">(</span><span class="n">user_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">user_id</span><span class="p">}</span>
-    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">PARTIAL_FAILURE</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;warnings&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">details</span><span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="p">},</span> <span class="mi">400</span>
+<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">200</span>
+<span class="k">return</span> <span class="mi">500</span>
 </code></pre></div>
-<h2 id="advantages">Advantages</h2>
+<hr />
+<h3 id="idempotent-retry">Idempotent Retry</h3>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  <span class="c1"># returns cached result</span>
+</code></pre></div>
+<hr />
+<h2 id="execution-characteristics">Execution Characteristics</h2>
+<ul>
+<li><strong>Sequential execution</strong> of subsystems</li>
+<li><strong>Centralized rollback logic</strong></li>
+<li><strong>Idempotent retries</strong></li>
+<li><strong>Single return type for callers</strong></li>
+</ul>
+<hr />
+<h2 id="testing-example">Testing Example</h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_idempotent_onboarding</span><span class="p">():</span>
+    <span class="n">result1</span> <span class="o">=</span> <span class="n">facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">result2</span> <span class="o">=</span> <span class="n">facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result1</span> <span class="o">==</span> <span class="n">result2</span>
+</code></pre></div>
+<hr />
+<h2 id="benefits">Benefits</h2>
 <table>
 <thead>
 <tr>
@@ -1241,48 +1513,50 @@
 </thead>
 <tbody>
 <tr>
-<td>Hides complex orchestration</td>
-<td>Can become complex itself over time</td>
+<td>Simple API for callers</td>
+<td>Facade can grow large</td>
 </tr>
 <tr>
-<td>Reusable across controllers</td>
-<td>Might do too much (God object)</td>
+<td>Centralized orchestration</td>
+<td>Requires careful design</td>
 </tr>
 <tr>
-<td>Clean error handling and rollback</td>
-<td>Hard to test all failure paths</td>
+<td>Consistent error handling</td>
+<td>May hide subsystem details</td>
 </tr>
 <tr>
-<td>Idempotent operations</td>
-<td>Performance overhead of abstraction</td>
+<td>Idempotent retry support</td>
+<td>Rollbacks are best-effort</td>
 </tr>
 <tr>
-<td>Easy to extend</td>
+<td>Keeps controllers thin</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<h2 id="testing">Testing</h2>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MockOnboardingFacade</span><span class="p">(</span><span class="n">OnboardingFacade</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mock facade for testing.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">onboard_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
-        <span class="c1"># Return success immediately</span>
-        <span class="k">return</span> <span class="n">OnboardingResult</span><span class="p">(</span>
-            <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
-            <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;mock_user_123&quot;</span>
-        <span class="p">)</span>
-
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">onboarding_facade</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">MockOnboardingFacade</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>  <span class="c1"># All mocked</span>
-    <span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_onboarding_success</span><span class="p">(</span><span class="n">onboarding_facade</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">onboarding_facade</span><span class="o">.</span><span class="n">onboard_user</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;test@example.com&quot;</span><span class="p">})</span>
-    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">OnboardingStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
-</code></pre></div>
+<hr />
+<h2 id="advanced-extensions">Advanced Extensions</h2>
+<ul>
+<li>Persistent onboarding state machine</li>
+<li>Async / event-driven onboarding</li>
+<li>Saga-based compensation</li>
+<li>Retry &amp; circuit breaker decorators</li>
+<li>Metrics and tracing inside Facade</li>
+</ul>
+<hr />
+<h2 id="when-to-use-facade">When to Use Facade</h2>
+<p>✅ Use when:</p>
+<ul>
+<li>Multiple subsystems must be coordinated</li>
+<li>Callers only care about success/failure</li>
+<li>Orchestration logic is growing in controllers</li>
+<li>You need a stable API over volatile internals</li>
+</ul>
+<p>❌ Avoid when:</p>
+<ul>
+<li>Logic is trivial or single-service</li>
+<li>Callers need fine-grained control over steps</li>
+</ul>
 
 
 
