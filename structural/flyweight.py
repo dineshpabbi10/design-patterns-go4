@@ -10,7 +10,10 @@ Constraints & hints:
 
 Deliverable: describe a `MetadataFlyweight` registry and how pipeline tasks obtain shared descriptors.
 """
+
 from threading import Lock
+
+
 class MetadataFlyweight:
     _registry = {}
     _lock = Lock()
@@ -25,4 +28,6 @@ class MetadataFlyweight:
             return cls._registry[descriptor_id]
 
     def __repr__(self):
-        return f"MetadataFlyweight(id={self.descriptor_id}, attributes={self.attributes})"
+        return (
+            f"MetadataFlyweight(id={self.descriptor_id}, attributes={self.attributes})"
+        )

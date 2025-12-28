@@ -9,7 +9,9 @@ Constraints & hints:
 
 Deliverable: define the proxy interface and discuss policy configuration and metrics.
 """
+
 import time
+
 
 class ParagoNClient:
     def get_user(self, user_id: str) -> dict:
@@ -22,8 +24,15 @@ class ParagoNClient:
         print(f"Updating user {user_id} with data {data} in ParagoN API")
         return True
 
+
 class ParagoNClientProxy:
-    def __init__(self, client: ParagoNClient, cache_ttl: int = 60, rate_limit: int = 10, breaker_threshold: int = 5):
+    def __init__(
+        self,
+        client: ParagoNClient,
+        cache_ttl: int = 60,
+        rate_limit: int = 10,
+        breaker_threshold: int = 5,
+    ):
         self.client = client
         self.cache = {}
         self.cache_ttl = cache_ttl
@@ -45,9 +54,9 @@ class ParagoNClientProxy:
         # Caching Logic
         if user_id in self.cache:
             cached_entry = self.cache[user_id]
-            if current_time - cached_entry['timestamp'] < self.cache_ttl:
+            if current_time - cached_entry["timestamp"] < self.cache_ttl:
                 print(f"Returning cached data for user {user_id}")
-                return cached_entry['data']
+                return cached_entry["data"]
 
         # Rate Limiting Logic (simple example)
         if len(self.cache) >= self.rate_limit:
@@ -55,7 +64,7 @@ class ParagoNClientProxy:
 
         try:
             data = self.client.get_user(user_id)
-            self.cache[user_id] = {'data': data, 'timestamp': current_time}
+            self.cache[user_id] = {"data": data, "timestamp": current_time}
             return data
         except Exception as e:
             self.failure_count += 1
