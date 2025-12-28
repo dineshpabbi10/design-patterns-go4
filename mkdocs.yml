@@ -54,3 +54,4 @@ nav:
     - Proxy: structural/proxy.md
   - Behavioral Patterns:
     - Overview: behavioral/index.md
+    - Strategy: behavioral/strategy.md
