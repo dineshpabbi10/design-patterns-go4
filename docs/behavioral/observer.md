@@ -1,7 +1,8 @@
-"""
-Problem: Build an `Observer`-style event system so backend services can notify interested frontends (React) and other
-services about state changes (e.g., customer status updates, pipeline job progress). Observers should be able to
-subscribe/unsubscribe dynamically and receive typed notifications.
+# Observer Pattern
+
+## Problem
+
+Build an `Observer`-style event system so backend services can notify interested frontends (React) and other services about state changes (e.g., customer status updates, pipeline job progress). Observers should be able to subscribe/unsubscribe dynamically and receive typed notifications.
 
 Constraints & hints:
 - Support multiple transports (websocket for React, message bus for services).
@@ -9,8 +10,12 @@ Constraints & hints:
 - Consider backpressure and slow consumer handling.
 
 Deliverable: design the observer registration API and an example notification flow for UI updates.
-"""
 
+## Solution
+
+Define an abstract `Observer` class with an `update` method, and an abstract `Subject` class with methods for registering, unregistering, and notifying observers. Implement concrete subjects and observers for different transports like WebSocket and Message Bus.
+
+```python
 from abc import abstractmethod, ABC
 
 WebSocketType = str  # Placeholder for actual WebSocket type
@@ -96,57 +101,9 @@ if __name__ == "__main__":
     subject.notify_observers(
         event="pipeline_job_progress", data={"job_id": 456, "progress": "50%"}
     )
+```
 
+## When to Use
 
-# Unit Tests with pytest
-def test_observer_registration_and_notification():
-    subject = EventSubject()
-
-    class TestObserver(Observer):
-        def __init__(self):
-            self.events = []
-
-        def update(self, event: str, data: dict):
-            self.events.append((event, data))
-
-    observer1 = TestObserver()
-    observer2 = TestObserver()
-
-    subject.register_observer(observer1)
-    subject.register_observer(observer2)
-
-    subject.notify_observers(event="test_event", data={"key": "value"})
-
-    assert len(observer1.events) == 1
-    assert observer1.events[0] == ("test_event", {"key": "value"})
-    assert len(observer2.events) == 1
-    assert observer2.events[0] == ("test_event", {"key": "value"})
-
-    subject.unregister_observer(observer1)
-    subject.notify_observers(
-        event="another_event", data={"another_key": "another_value"}
-    )
-
-    assert len(observer1.events) == 1  # No new events for observer1
-    assert len(observer2.events) == 2
-    assert observer2.events[1] == ("another_event", {"another_key": "another_value"})
-
-
-def test_react_observer_update(capsys):
-    react_observer = ReactObserver(websocket="WebSocketConnectionTest")
-    react_observer.update(event="test_event", data={"key": "value"})
-    captured = capsys.readouterr()
-    assert (
-        "ReactObserver received event 'test_event' with data: {'key': 'value'} with websocket WebSocketConnectionTest"
-        in captured.out
-    )
-
-
-def test_message_bus_observer_update(capsys):
-    message_bus_observer = MessageBusObserver(message_bus="MessageBusConnectionTest")
-    message_bus_observer.update(event="test_event", data={"key": "value"})
-    captured = capsys.readouterr()
-    assert (
-        "MessageBusObserver received event 'test_event' with data: {'key': 'value'} with message bus MessageBusConnectionTest"
-        in captured.out
-    )
+Use the Observer pattern when you need to notify multiple objects about changes in the state of another object, especially when the number of observers is dynamic and can change at runtime. It's particularly useful in event-driven systems, GUI frameworks, and distributed systems where components need to react to state changes without tight coupling.</content>
+<parameter name="filePath">/workspaces/design-patterns-gog/docs/behavioral/observer.md

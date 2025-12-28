@@ -55,3 +55,4 @@ nav:
   - Behavioral Patterns:
     - Overview: behavioral/index.md
     - Strategy: behavioral/strategy.md
+    - Observer: behavioral/observer.md
