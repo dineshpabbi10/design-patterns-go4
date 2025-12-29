@@ -13,10 +13,8 @@
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../iterator/">
       
-      
-        <link rel="next" href="../factory_method/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Singleton - Gang of Four Design Patterns</title>
+        <title>Template Method - Gang of Four Design Patterns</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#singleton-pattern" class="md-skip">
+        <a href="#template-method-design-pattern" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Singleton
+              Template Method
             
           </span>
         </div>
@@ -224,13 +222,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../creational/" class="md-tabs__link">
           
   
   
@@ -266,11 +262,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../behavioral/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -366,31 +364,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -408,7 +403,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -426,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../creational/" class="md-nav__link">
         
   
   
@@ -451,37 +446,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Singleton
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../creational/singleton/" class="md-nav__link">
         
   
   
@@ -497,92 +465,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Problem
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Solution
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Features
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage-in-your-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Usage in Your Code
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advantages-disadvantages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Advantages &amp; Disadvantages
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-tip" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Testing Tip
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -595,7 +477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../factory_method/" class="md-nav__link">
+      <a href="../../creational/factory_method/" class="md-nav__link">
         
   
   
@@ -623,7 +505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_factory/" class="md-nav__link">
+      <a href="../../creational/abstract_factory/" class="md-nav__link">
         
   
   
@@ -651,7 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../builder/" class="md-nav__link">
+      <a href="../../creational/builder/" class="md-nav__link">
         
   
   
@@ -679,7 +561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../prototype/" class="md-nav__link">
+      <a href="../../creational/prototype/" class="md-nav__link">
         
   
   
@@ -996,28 +878,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -1035,7 +920,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1053,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../behavioral/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1081,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../behavioral/strategy/" class="md-nav__link">
+      <a href="../strategy/" class="md-nav__link">
         
   
   
@@ -1109,7 +994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../behavioral/observer/" class="md-nav__link">
+      <a href="../observer/" class="md-nav__link">
         
   
   
@@ -1137,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../behavioral/iterator/" class="md-nav__link">
+      <a href="../iterator/" class="md-nav__link">
         
   
   
@@ -1162,10 +1047,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../behavioral/template_method/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Template Method
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1181,6 +1093,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explanation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1213,116 +1211,92 @@
   
 
 
-<h1 id="singleton-pattern">Singleton Pattern</h1>
+<h1 id="template-method-design-pattern">Template Method Design Pattern</h1>
 <h2 id="problem">Problem</h2>
-<p>When you run microservices with multiple threads or async workers, you need a <strong>single, shared instance</strong> of expensive resources like database connections or API clients. The <code>ParagoNClientManager</code> singleton ensures all threads in a process use the same cached client instance, avoiding redundant credentials and connection overhead.</p>
+<p>In many applications, especially those involving data processing like ETL (Extract, Transform, Load) jobs, there's a common high-level algorithm that remains consistent, but the specific implementation details of individual steps vary depending on the context or data source. For example, an ETL process might always involve extracting data, transforming it, and then loading it. However, the extraction method for a CSV file will differ from that of a database, and similarly for transformation and loading.</p>
+<p>The challenge is to define a skeleton of an algorithm in an operation, deferring some steps to subclasses. This allows subclasses to redefine certain steps of an algorithm without changing the algorithm's structure.</p>
 <h2 id="solution">Solution</h2>
-<p>Create a class that enforces single instantiation:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagonNSingleton</span><span class="p">:</span>
-    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="c1"># Simulate fetching a token using the API key</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">refresh_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ParagonNSingletonManager</span><span class="p">:</span>
-    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span> 
-    <span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Use get_instance() method to get the singleton instance.&quot;</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span> 
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ParagonNSingletonManager&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">ParagonNSingletonManager</span><span class="p">)</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">ParagonNSingleton</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParagonNSingleton</span><span class="p">:</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">client</span>
+<p>The Template Method design pattern addresses this by defining the skeleton of an algorithm in a base class, but allows subclasses to override specific steps without changing the overall structure. This promotes code reuse and ensures consistency in the high-level algorithm.</p>
+<p>In the provided Python example, <code>ETLTemplate</code> serves as the abstract base class that defines the template method <code>run()</code>. This method orchestrates the execution of the ETL process: <code>extract()</code>, <code>transform()</code>, <code>load()</code>, <code>validate()</code>, and <code>monitor()</code>. The <code>extract()</code>, <code>transform()</code>, and <code>load()</code> methods are declared as abstract, forcing subclasses to provide their concrete implementations. The <code>validate()</code> and <code>monitor()</code> methods provide default implementations that can also be overridden by subclasses if needed.</p>
+<p>This pattern ensures that:
+- The overall flow of the ETL job (extract -&gt; transform -&gt; load -&gt; validate -&gt; monitor) is fixed.
+- Subclasses can provide their specific logic for extraction, transformation, and loading.
+- Common pre/post steps like validation and monitoring are enforced.</p>
+<h2 id="structure">Structure</h2>
+<div class="highlight"><pre><span></span><code>+----------------+       +-------------------+
+| ETLTemplate    |       | ConcreteETL       |
++----------------+       +-------------------+
+| + run()        |──────&gt;| + run()           |
+| + extract()    |&lt;───── | + extract()       |
+| + transform()  |&lt;───── | + transform()     |
+| + load()       |&lt;───── | + load()          |
+| + validate()   |       | + validate() (opt)|
+| + monitor()    |       | + monitor() (opt) |
++----------------+       +-------------------+
 </code></pre></div>
-<h2 id="key-features">Key Features</h2>
+<h2 id="example-code">Example Code</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ETLTemplate</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">()</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validating data...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitoring ETL job...&quot;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CSVETL</span><span class="p">(</span><span class="n">ETLTemplate</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting data from CSV file...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transforming CSV data...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading data into the database...&quot;</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">etl_job</span> <span class="o">=</span> <span class="n">CSVETL</span><span class="p">()</span>
+    <span class="n">etl_job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="unit-tests">Unit Tests</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csv_etl</span><span class="p">(</span><span class="n">capsys</span><span class="p">):</span>
+    <span class="n">etl_job</span> <span class="o">=</span> <span class="n">CSVETL</span><span class="p">()</span>
+    <span class="n">etl_job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">captured</span> <span class="o">=</span> <span class="n">capsys</span><span class="o">.</span><span class="n">readouterr</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s2">&quot;Extracting data from CSV file...&quot;</span> <span class="ow">in</span> <span class="n">captured</span><span class="o">.</span><span class="n">out</span>
+    <span class="k">assert</span> <span class="s2">&quot;Transforming CSV data...&quot;</span> <span class="ow">in</span> <span class="n">captured</span><span class="o">.</span><span class="n">out</span>
+    <span class="k">assert</span> <span class="s2">&quot;Loading data into the database...&quot;</span> <span class="ow">in</span> <span class="n">captured</span><span class="o">.</span><span class="n">out</span>
+    <span class="k">assert</span> <span class="s2">&quot;Validating data...&quot;</span> <span class="ow">in</span> <span class="n">captured</span><span class="o">.</span><span class="n">out</span>
+    <span class="k">assert</span> <span class="s2">&quot;Monitoring ETL job...&quot;</span> <span class="ow">in</span> <span class="n">captured</span><span class="o">.</span><span class="n">out</span>
+</code></pre></div>
+<h2 id="explanation">Explanation</h2>
 <ul>
-<li><strong>Thread-safe</strong>: Uses double-checked locking to prevent race conditions</li>
-<li><strong>Lazy initialization</strong>: Client created only on first use</li>
-<li><strong>Global access</strong>: <code>ParagoNClientManager().get_client()</code> from anywhere</li>
-<li><strong>Credentials managed</strong>: API keys loaded once per process</li>
+<li><strong><code>ETLTemplate</code> (Abstract Base Class):</strong> This class defines the template method <code>run()</code> which outlines the fixed sequence of operations. It declares abstract methods (<code>extract</code>, <code>transform</code>, <code>load</code>) that must be implemented by concrete subclasses, and provides concrete methods (<code>validate</code>, <code>monitor</code>) with default behaviors that can be optionally overridden.</li>
+<li><strong><code>CSVETL</code> (Concrete Class):</strong> This class is a concrete implementation of <code>ETLTemplate</code>. It provides specific logic for <code>extracting</code> data from a CSV file, <code>transforming</code> that data, and <code>loading</code> it into a database. It reuses the default <code>validate</code> and <code>monitor</code> steps defined in the base class.</li>
 </ul>
-<h2 id="usage-in-your-code">Usage in Your Code</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get singleton client instance</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>  <span class="c1"># True - both are the same instance</span>
-
-<span class="c1"># Thread-safe access</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">access_client</span><span class="p">():</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">ParagonNSingletonManager</span><span class="o">.</span><span class="n">get_client</span><span class="p">(</span><span class="s2">&quot;my_api_key&quot;</span><span class="p">)</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">refresh_token</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Token: </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
-<span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">access_client</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="advantages-disadvantages">Advantages &amp; Disadvantages</h2>
-<table>
-<thead>
-<tr>
-<th>Pros</th>
-<th>Cons</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Single shared instance reduces overhead</td>
-<td>Hard to test (global state)</td>
-</tr>
-<tr>
-<td>Thread-safe token refresh</td>
-<td>Difficult to mock in unit tests</td>
-</tr>
-<tr>
-<td>Credentials loaded once</td>
-<td>Tight coupling to singleton</td>
-</tr>
-<tr>
-<td>Easy global access</td>
-<td>Hidden dependencies</td>
-</tr>
-</tbody>
-</table>
-<h2 id="testing-tip">Testing Tip</h2>
-<p>For unit tests, consider a <strong>test-friendly alternative</strong>: use dependency injection or a registry pattern instead of a pure singleton.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Testable version</span>
-<span class="n">client_manager</span> <span class="o">=</span> <span class="n">ParagoNClientManager</span><span class="p">()</span>
-<span class="c1"># Pass to handlers as dependency</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">handle_user_request</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">client_manager</span><span class="o">=</span><span class="n">client_manager</span><span class="p">):</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">client_manager</span><span class="o">.</span><span class="n">get_client</span><span class="p">()</span>
-    <span class="c1"># ...</span>
-</code></pre></div>
+<p>This pattern is highly effective for building frameworks where invariant parts of an algorithm are encapsulated, and variant parts are left for implementers to define.</p>
 
 
 
