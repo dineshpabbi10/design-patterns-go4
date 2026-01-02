@@ -60,3 +60,4 @@ nav:
     - Template Method: behavioral/template_method.md
     - Mediator: behavioral/mediator.md
     - Command: behavioral/command.md
+    - Chain of Responsibility: behavioral/chain_of_responsibility.md
