@@ -19,7 +19,7 @@ from typing import Any, Dict, Optional
 @dataclass
 class Event:
     """Represents an event flowing through the handler chain.
-    
+
     Attributes:
         event_id: Unique identifier for the event.
         payload: Dictionary containing event data.
@@ -37,10 +37,10 @@ class Event:
 
 class Handler(ABC):
     """Abstract base class for handlers in the chain of responsibility pattern.
-    
+
     Each handler can process an event and optionally pass it to the next handler.
     Handlers can modify the event before passing it forward.
-    
+
     Attributes:
         next_handler: The next handler in the chain.
         priority: Priority level for handler ordering (lower = earlier in chain).
@@ -50,7 +50,7 @@ class Handler(ABC):
         self, next_handler: Optional["Handler"] = None, priority: int = 0
     ) -> None:
         """Initialize a handler.
-        
+
         Args:
             next_handler: The next handler in the chain.
             priority: Priority level for handler ordering.
@@ -61,13 +61,13 @@ class Handler(ABC):
     @abstractmethod
     def handle(self, event: Event) -> Event:
         """Process the event.
-        
+
         Args:
             event: The event to process.
-            
+
         Returns:
             The processed event.
-            
+
         Raises:
             Exception: If event processing fails and short-circuiting is triggered.
         """
@@ -76,19 +76,19 @@ class Handler(ABC):
 
 class ValidationHandler(Handler):
     """Handler that validates event structure and content.
-    
+
     Ensures required fields are present before passing to the next handler.
     """
 
     def handle(self, event: Event) -> Event:
         """Validate the event.
-        
+
         Args:
             event: The event to validate.
-            
+
         Returns:
             The validated event.
-            
+
         Raises:
             ValueError: If the event is invalid.
         """
@@ -102,16 +102,16 @@ class ValidationHandler(Handler):
 
 class EnrichmentHandler(Handler):
     """Handler that enriches event data.
-    
+
     Calls external APIs or performs transformations to add contextual information.
     """
 
     def handle(self, event: Event) -> Event:
         """Enrich the event with additional data.
-        
+
         Args:
             event: The event to enrich.
-            
+
         Returns:
             The enriched event.
         """
@@ -124,16 +124,16 @@ class EnrichmentHandler(Handler):
 
 class AuthorizationHandler(Handler):
     """Handler that authorizes the event.
-    
+
     Checks permissions and access control before allowing further processing.
     """
 
     def handle(self, event: Event) -> Event:
         """Authorize the event.
-        
+
         Args:
             event: The event to authorize.
-            
+
         Returns:
             The authorized event.
         """
@@ -146,16 +146,16 @@ class AuthorizationHandler(Handler):
 
 class RoutingHandler(Handler):
     """Handler that determines the routing destination for the event.
-    
+
     Assigns the event to an appropriate route based on its content and metadata.
     """
 
     def handle(self, event: Event) -> Event:
         """Route the event to its destination.
-        
+
         Args:
             event: The event to route.
-            
+
         Returns:
             The routed event.
         """
@@ -168,10 +168,10 @@ class RoutingHandler(Handler):
 
 def build_handler_chain() -> Handler:
     """Build and return the handler chain in priority order.
-    
+
     Constructs the chain with handlers ordered by priority, with lowest priority
     handlers executing first.
-    
+
     Returns:
         The first handler in the chain.
     """
@@ -195,7 +195,6 @@ def build_handler_chain() -> Handler:
         handlers[i].next_handler = handlers[i + 1]
 
     return handlers[0]
-
 
 
 def main() -> None:
