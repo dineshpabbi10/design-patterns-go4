@@ -57,6 +57,7 @@ nav:
     - Strategy: behavioral/strategy.md
     - Observer: behavioral/observer.md
     - Iterator: behavioral/iterator.md
+    - State: behavioral/state.md
     - Template Method: behavioral/template_method.md
     - Mediator: behavioral/mediator.md
     - Command: behavioral/command.md

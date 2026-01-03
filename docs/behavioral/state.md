@@ -1,3 +1,46 @@
+# State Pattern
+
+## Problem
+
+You are designing an Order Lifecycle State Machine for a distributed, microservice-based system. An order is processed by multiple independent services (Validation, Provisioning, Billing, etc.), each responsible for a specific step in the lifecycle.
+
+The system must ensure:
+
+- Valid state transitions
+- No illegal or out-of-order transitions
+- Consistency despite retries, failures, and concurrent updates
+
+Order Lifecycle States
+
+An order can be in exactly one of the following states at any time:
+
+- CREATED — Order accepted but not yet validated
+- VALIDATED — Order data and prerequisites verified
+- PROVISIONED — Resources successfully provisioned
+- BILLED — Payment captured
+- COMPLETED — Order fully processed
+- FAILED — Order permanently failed (terminal state)
+
+Transition Rules
+
+Transitions must follow explicit, predefined rules:
+
+| From State | Allowed Next States |
+|------------|-------------------|
+| CREATED | VALIDATED, FAILED |
+| VALIDATED | PROVISIONED, FAILED |
+| PROVISIONED | BILLED, FAILED |
+| BILLED | COMPLETED, FAILED |
+| COMPLETED | — (terminal) |
+| FAILED | — (terminal) |
+
+Any transition not listed above is invalid and must be rejected.
+
+## Solution
+
+Define an abstract `OrderState` class with methods for each possible action, and concrete state classes that implement the behavior for each state. Use an enum to define the states and a transition table to validate state changes.
+
+```python
 """
 Context
 
@@ -532,3 +575,16 @@ if __name__ == "__main__":
         order2.validate_order()  # This should raise an exception
     except Exception as e:
         print(f"Error: {e}")
+```
+
+## When to Use
+
+Use the State pattern when you have an object that behaves differently depending on its current state, and the state transitions are complex or need to be enforced. It's particularly useful for implementing state machines where:
+
+- The object can be in one of several states
+- The behavior changes based on the current state
+- State transitions need to be controlled and validated
+- You want to avoid large conditional statements in the main class
+
+The State pattern helps avoid monolithic classes with many conditional statements and makes state transitions explicit and enforceable.</content>
+<parameter name="filePath">/workspaces/design-patterns-gog/docs/behavioral/state.md
