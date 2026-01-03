@@ -23,7 +23,12 @@ class PipelineMemento:
     and credentials, providing a way to save and restore the state securely.
     """
 
-    def __init__(self, offsets: Dict[str, Any], schema_versions: Dict[str, Any], credentials: Dict[str, str]) -> None:
+    def __init__(
+        self,
+        offsets: Dict[str, Any],
+        schema_versions: Dict[str, Any],
+        credentials: Dict[str, str],
+    ) -> None:
         """Initialize the PipelineMemento.
 
         Args:
@@ -98,7 +103,7 @@ class PipelineOrchestrator:
         return PipelineMemento(
             offsets=self.current_offsets,
             schema_versions=self.current_schema_versions,
-            credentials=self.current_credentials
+            credentials=self.current_credentials,
         )
 
     def restore_from_memento(self, memento: PipelineMemento) -> None:
@@ -115,9 +120,9 @@ class PipelineOrchestrator:
 
 # Example usage:
 orchestrator = PipelineOrchestrator()
-orchestrator.current_offsets = {'source1': 100, 'source2': 200}
-orchestrator.current_schema_versions = {'source1': 'v1.2', 'source2': 'v3.4'}
-orchestrator.current_credentials = {'db_user': 'user123', 'db_pass': 'pass123'}
+orchestrator.current_offsets = {"source1": 100, "source2": 200}
+orchestrator.current_schema_versions = {"source1": "v1.2", "source2": "v3.4"}
+orchestrator.current_credentials = {"db_user": "user123", "db_pass": "pass123"}
 memento = orchestrator.create_memento()
 
 # Simulate a failure and restore from memento
@@ -129,25 +134,30 @@ print(f"Current Offsets: {orchestrator.current_offsets}")
 print(f"Current Schema Versions: {orchestrator.current_schema_versions}")
 print(f"Current Credentials: {orchestrator.current_credentials}")
 
+
 # Unit tests with pytest
 def test_pipeline_memento_creation_and_restoration():
     orchestrator = PipelineOrchestrator()
-    orchestrator.current_offsets = {'sourceA': 50, 'sourceB': 75}
-    orchestrator.current_schema_versions = {'sourceA': 'v2.0', 'sourceB': 'v1.5'}
-    orchestrator.current_credentials = {'api_key': 'key123', 'api_secret': 'secret123'}
-    
+    orchestrator.current_offsets = {"sourceA": 50, "sourceB": 75}
+    orchestrator.current_schema_versions = {"sourceA": "v2.0", "sourceB": "v1.5"}
+    orchestrator.current_credentials = {"api_key": "key123", "api_secret": "secret123"}
+
     memento = orchestrator.create_memento()
-    
+
     # Change current state
     orchestrator.current_offsets = {}
     orchestrator.current_schema_versions = {}
     orchestrator.current_credentials = {}
-    
+
     # Restore from memento
     orchestrator.restore_from_memento(memento)
-    
-    assert orchestrator.current_offsets == {'sourceA': 50, 'sourceB': 75}
-    assert orchestrator.current_schema_versions == {'sourceA': 'v2.0', 'sourceB': 'v1.5'}
-    assert orchestrator.current_credentials == {'api_key': 'secured_key123', 'api_secret': 'secured_secret123'}
 
-
+    assert orchestrator.current_offsets == {"sourceA": 50, "sourceB": 75}
+    assert orchestrator.current_schema_versions == {
+        "sourceA": "v2.0",
+        "sourceB": "v1.5",
+    }
+    assert orchestrator.current_credentials == {
+        "api_key": "secured_key123",
+        "api_secret": "secured_secret123",
+    }

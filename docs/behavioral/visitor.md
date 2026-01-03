@@ -1,3 +1,21 @@
+# Visitor Pattern
+
+## Problem
+
+You need to perform different operations over a tree-like structure of configuration nodes (e.g., validation, metrics collection, migration). Implement a `Visitor` that can traverse config trees and run operations without modifying the tree classes.
+
+Constraints & hints:
+- Visitors should be easy to add for new operations.
+- Traversal should support pre/post-order hooks and short-circuiting.
+- Useful for decoupling operations from the data model.
+
+Deliverable: define the visitor interface and an example visitor for validating config versions.
+
+## Solution
+
+Define an abstract `ConfigVisitor` class with `pre_hook`, `post_hook`, and `visit` methods, and a `traverse` method for tree traversal. Define an abstract `ConfigNode` class with an `accept` method. Implement concrete nodes and visitors.
+
+```python
 """
 Problem: You need to perform different operations over a tree-like structure of configuration nodes (e.g., validation,
 metrics collection, migration). Implement a `Visitor` that can traverse config trees and run operations without
@@ -162,3 +180,9 @@ def test_version_validation_visitor():
     validator_mismatch = VersionValidationVisitor(version_id=1)
     root_mismatch.accept(validator_mismatch)
     assert validator_mismatch.is_valid == False
+```
+
+## When to Use
+
+Use the Visitor pattern when you need to perform operations on elements of a complex object structure without modifying the classes of the elements. It's particularly useful for tree-like structures where you want to add new operations without changing the node classes, and when operations involve different types of nodes that require type-specific behavior.</content>
+<parameter name="filePath">/workspaces/design-patterns-gog/docs/behavioral/visitor.md

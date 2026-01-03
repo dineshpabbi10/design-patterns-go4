@@ -62,3 +62,4 @@ nav:
     - Command: behavioral/command.md
     - Chain of Responsibility: behavioral/chain_of_responsibility.md
     - Memento: behavioral/memento.md
+    - Visitor: behavioral/visitor.md
